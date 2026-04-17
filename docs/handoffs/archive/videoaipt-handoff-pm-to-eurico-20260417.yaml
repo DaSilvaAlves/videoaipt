@@ -5,10 +5,17 @@ handoff:
   to_agent: eurico (human)
   to_persona: Eurico Alves
   created: 2026-04-17
-  status: pending
-  consumed: false
-  consumed_at: null
-  consumed_by: null
+  status: consumed
+  consumed: true
+  consumed_at: 2026-04-17
+  consumed_by: eurico (human)
+  consumption_mode: tacit_approval
+  consumption_note: >
+    Eurico leu PRD v0.9 completo e aprovou tacitamente com "li. podes avançar"
+    em 2026-04-17. Optou por não responder às 20 questões síncronas — as
+    assumptions são validadas/refutadas indirectamente via dados reais do
+    Passo B (research das 4 camadas). Promoção de PRD para v1.0 fica para
+    depois do research, quando o @pm puder iterar com factos de mercado.
 
 summary: >
   PRD.md expandido de v0.1 (skeleton) para v0.9 (draft completo não-autoritativo) pelo @pm

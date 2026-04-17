@@ -1,0 +1,184 @@
+handoff:
+  id: videoaipt-handoff-eurico-to-analyst-20260417
+  from_agent: eurico (human)
+  from_persona: Eurico Alves
+  to_agent: analyst
+  to_persona: Alex
+  created: 2026-04-17
+  status: pending
+  consumed: false
+  consumed_at: null
+  consumed_by: null
+
+summary: >
+  Passo A concluído (bootstrap + squad renomeado) e Passo A.5 concluído (PRD v0.9 com 20
+  assumptions do Morgan aprovadas tacitamente pelo Eurico). Arrancar Passo B — research
+  comparativo das 4 camadas de stack para produção automatizada de vídeo curto. Output
+  esperado: decisão fundamentada de stack (camada 1/2/3/4) com custo por vídeo, latência
+  end-to-end, qualidade em food-content (caso Alturense), e limites de API.
+
+context:
+  project: VIDEO-AI-PT
+  project_root: C:\Users\XPS\Documents\videoaipt
+  phase: Passo B — research de stack
+  language: PT-PT (nunca PT-BR)
+
+  what_is_the_mission:
+    description: >
+      Produzir research comparativo das 4 camadas técnicas e emitir recomendação
+      fundamentada para o @architect (Aria) tomar decisão final de stack. Output deve
+      validar/refutar as assumptions marcadas no PRD v0.9 (secções 10, 11, 13 + lista
+      15).
+    target_output: docs/research/2026-04-17-video-stack-decision.md
+    estimated_duration: 2-4h
+
+  the_4_layers_to_research:
+    layer_1_video_generation:
+      substitutes: Lovart.ai (manual no workflow actual do Alturense)
+      candidates:
+        - Runway Gen-3 / Gen-4 Turbo via API
+        - Wan 2.2 via fal.ai (ou ComfyUI local — Eurico já tem instalação activa em C:\Users\XPS\Documents\comfy)
+        - Kling AI via API
+        - Luma Dream Machine via API
+        - Minimax Video via API
+        - Lovart API (se existir — verificar)
+      evaluation_criteria:
+        - Custo por segundo gerado
+        - Qualidade em vídeo de comida/restaurante (caso Alturense, 20-30s)
+        - Tempo de geração (latência)
+        - Rate limits e quotas
+        - Suporte a prompt cinematográfico complexo (pacing, shot direction)
+        - Consistência entre clips (útil se vídeo final tiver múltiplos shots)
+
+    layer_2_image_generation:
+      substitutes: Canva manual (4 designs 1:1 por vídeo no fluxo actual)
+      candidates:
+        - Canva Connect API via MCP (Eurico já tem activo mcp__claude_ai_Canva__*)
+        - Nanobanana / Gemini 2.5 Flash Image
+        - ComfyUI local com modelos específicos (SDXL, Flux)
+        - Ideogram API (forte em tipografia)
+        - Combinação híbrida (ex: Gemini para speed + Canva para revíveis)
+      evaluation_criteria:
+        - Custo por imagem
+        - Qualidade em food-design estilo Atum à Algarvia (paletas quentes)
+        - Capacidade de texto tipográfico embutido
+        - Editabilidade posterior (Canva) vs fire-and-forget (Nanobanana)
+
+    layer_3_programmatic_editing:
+      label: CRÍTICA — camada mais cara do CapCut manual actual (~1h do workflow)
+      substitutes: CapCut manual
+      required_capabilities:
+        - Música sobreposta
+        - Texto animado (overlays tipográficos)
+        - Transições
+        - Corte (trim/split)
+        - Legendas queimadas
+        - Efeitos visuais
+      candidates:
+        - Remotion (React-based programmatic video) — recomendação inicial do handoff bootstrap
+        - Shotstack API
+        - Creatomate API
+        - FFmpeg puro (CLI / Node wrapper)
+        - ffmpeg.wasm (browser-side)
+        - Descript API
+        - Híbrido Remotion + FFmpeg (Remotion para composição, FFmpeg para encode)
+      evaluation_criteria:
+        - Custo por minuto renderizado
+        - Capacidade de legendas queimadas em PT-PT (acentos!)
+        - Templates reutilizáveis vs código custom
+        - Curva de aprendizagem
+        - Onde renderiza (local / Vercel / AWS / managed)
+
+    layer_4_captioning:
+      substitutes: legendagem manual em CapCut
+      candidates:
+        - Whisper (OpenAI API) ou local
+        - Gladia API (optimizado multi-língua, bom PT)
+        - AssemblyAI (tem speaker labels)
+        - Auto-caption do Remotion (se Remotion for camada 3)
+      evaluation_criteria:
+        - Precisão em PT-PT europeu (não PT-BR!)
+        - Custo por minuto transcrito
+        - Suporte a accented characters e diacríticos
+        - Saída timed (SRT/VTT) vs plain
+
+  the_alturense_test_case:
+    description: >
+      Caso de teste #1 que o Eurico opera manualmente hoje. Research deve validar se cada
+      combinação de stack consegue reproduzir o output típico deste cliente.
+    specs:
+      format: Facebook 1:1 (quadrado)
+      duration: 20-30 segundos
+      cadence: 1 vídeo/dia
+      style: paletas quentes estilo "Atum à Algarvia"
+      content: prato do dia do restaurante, foto substituída num design
+      current_manual_time: ~2h
+      target_automated_time: <15 min
+      language: PT-PT (crítico para camada 4 captioning)
+
+  assumptions_to_validate_or_refute:
+    description: >
+      Estas assumptions foram aceites tacitamente pelo Eurico mas só podem ser promovidas
+      a decisões firmes com dados reais do research. @analyst deve cruzar cada uma com os
+      findings.
+    list:
+      - Q6 (PRD§15): custo alvo <€2 por vídeo entregue — é atingível com stack cloud?
+      - Q7 (PRD§15): v1.0 com 1 único provider por camada (fallback fica v1.1) — viável sem rate-limit risk?
+      - Q8 (PRD§15): Canva MCP vs Gemini directo em v1.0 — qual dá melhor time-to-market?
+      - Q10 (PRD§15): ComfyUI local como escape hatch para custo/rate-limit — viável operacionalmente?
+      - R1/R2 (PRD§13): dependência em APIs externas e deprecações — qual stack tem menor risk surface?
+
+  constraints:
+    - PT-PT obrigatório em todo o output (não apenas research — camada 4 também)
+    - Não-objectivos do PRD (secção 7) — não pesquisar agendadores nem CRM
+    - Princípio "Máximo de automação" — preferir stacks API-first sobre manual tooling
+    - Preparação Fase 2 SaaS multi-tenant — avaliar licenças/ToS permissivos
+
+deliverables:
+  required:
+    - path: docs/research/2026-04-17-video-stack-decision.md
+      sections:
+        - 1. Executive summary (300 palavras, decisão + custo estimado + latência)
+        - 2. Metodologia (que candidatos foram testados, como, fontes)
+        - 3. Camada 1 (vídeo IA) — tabela comparativa + recomendação
+        - 4. Camada 2 (imagem) — tabela comparativa + recomendação
+        - 5. Camada 3 (edição programática) — tabela comparativa + recomendação
+        - 6. Camada 4 (legendagem PT-PT) — tabela comparativa + recomendação
+        - 7. Stack recomendada end-to-end (diagrama textual de data flow)
+        - 8. Custo total estimado por vídeo Alturense (breakdown camada a camada)
+        - 9. Latência end-to-end estimada (breakdown)
+        - 10. Validação das assumptions do PRD (1 por 1: confirmed / refuted / inconclusive)
+        - 11. Risk register actualizado (incorporar achados)
+        - 12. Handoff para @architect com pergunta arquitectural em aberto
+
+  optional:
+    - Se fizer sentido, criar docs/research/comparison-tables/ com CSV/MD das tabelas brutas
+    - Screenshot ou sample output de cada provider testado (se acessível)
+
+blockers: []
+
+next_action:
+  description: >
+    @analyst (Alex), arranca Passo B. Não precisas de validar as 20 questões do PRD — o
+    Eurico deu aprovação tácita. Em vez disso, produz research que dá factos para o
+    @architect decidir a stack. Prioriza camada 3 (edição programática) — é a mais cara
+    de reverter depois.
+  suggested_first_commands:
+    - "@analyst *help"
+    - "ler HANDOFF-BOOTSTRAP.md secção 4 (candidatos iniciais por camada)"
+    - "ler PRD.md v0.9 secção 13 (risk register) para entender o que mitigar"
+    - "ler CLAUDE.md para mental model"
+    - "*research stack-video-camada-1"
+  estimated_effort: 2-4h (paralelizável por camada)
+
+after_analyst_completes:
+  next_in_pipeline: "@architect (Aria) — decisão final de stack baseada no research + update da secção 8 do PRD"
+  then: "@pm (Morgan) promove PRD para v1.0 integrando research + decisão arquitectural + mitigações"
+  then: "@sm (River) cria primeira story do Passo C (adaptação do squad + implementação MVP v1.0)"
+
+references:
+  - PRD.md v0.9 (artefacto principal — ler secções 10, 11, 13, 15)
+  - HANDOFF-BOOTSTRAP.md (secção 4 tem candidatos iniciais por camada)
+  - CLAUDE.md (mental model do projecto)
+  - docs/handoffs/archive/videoaipt-handoff-pm-to-eurico-20260417.yaml (contexto da aprovação tácita)
+  - squad/config/tech-stack.md (tech stack existente do squad, extensível)
