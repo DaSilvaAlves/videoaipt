@@ -10,7 +10,7 @@
 
 | ID | From → To | Summary | Created |
 |----|-----------|---------|---------|
-| videoaipt-handoff-analyst-to-architect-20260417 | analyst (Alex) → architect (Aria) | Research Passo B concluído — `docs/research/2026-04-17-video-stack-decision.md` com stack recomendada (Kling v2, Gemini 2.5 Flash Image, Remotion+FFmpeg, Whisper+post-processor PT-PT), custo €0,83-€1,35/vídeo (CONFIRMED <€2), latência 3-12min (CONFIRMED <15min). Aria deve re-verificar 9 pricings [KC-2026-01], responder Q-ARQ-1 a Q-ARQ-4, actualizar PRD §8. | 2026-04-17 |
+| videoaipt-handoff-architect-to-pm-20260417 | architect (Aria) → pm (Morgan) | Passo B.5 ratificacao arquitectural concluida. Stack v1.0 decidida (Kling v2 / Gemini 2.5 Flash Image / Remotion LOCAL / text-from-script stub). Q-ARQ-1 LOCAL, Q-ARQ-2 Whisper OUT OF SCOPE (Eurico), Q-ARQ-3 abstraction day-1. PRD v0.9 → v0.95, secções 8/11/13 actualizadas. Morgan deve validar Q1-Q20 com Eurico, promover PRD v1.0, emitir handoff para @sm começar Passo C com story "Remotion Alturense template" (mitigação R4+R20). | 2026-04-17 |
 
 ---
 
@@ -21,6 +21,7 @@
 | videoaipt-handoff-bootstrap-to-pm-20260417 | ux-design-expert (Uma) → pm (Morgan) | 2026-04-17 | pm (Morgan) |
 | videoaipt-handoff-pm-to-eurico-20260417 | pm (Morgan) → eurico (human) | 2026-04-17 | eurico (tacit_approval) |
 | videoaipt-handoff-eurico-to-analyst-20260417 | eurico (human) → analyst (Alex) | 2026-04-17 | analyst (Alex) |
+| videoaipt-handoff-analyst-to-architect-20260417 | analyst (Alex) → architect (Aria) | 2026-04-17 | architect (Aria) |
 
 ---
 

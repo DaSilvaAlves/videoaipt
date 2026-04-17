@@ -1,0 +1,203 @@
+handoff:
+  id: videoaipt-handoff-architect-to-pm-20260417
+  from_agent: architect
+  from_persona: Aria
+  to_agent: pm
+  to_persona: Morgan
+  created: 2026-04-17
+  status: pending
+  consumed: false
+  consumed_at: null
+  consumed_by: null
+
+summary: >
+  Passo B.5 (ratificação arquitectural) concluído. Stack v1.0 decidida,
+  Q-ARQ-1 (render LOCAL), Q-ARQ-2 (Whisper OUT OF SCOPE, decisão do Eurico
+  2026-04-17) e Q-ARQ-3 (abstraction day-1) respondidas. `PRD.md` actualizado
+  de v0.9 → v0.95 com §8 reescrita do zero (8 subsecções: stack, data flow,
+  decisões, abstraction layer, persistence pattern, custo, latência, deploy
+  topology), §11 revista para reflectir Whisper fora de v1.0, §13 com
+  severidades revistas + novos riscos R18-R22. Morgan (@pm) deve agora
+  resolver Q1-Q20 remanescentes na §15 com Eurico e promover para v1.0,
+  emitindo handoff para @sm arrancar Passo C com primeira story
+  "Remotion Alturense template" (mitigação crítica de R4).
+
+context:
+  project: VIDEO-AI-PT
+  project_root: C:\Users\XPS\Documents\videoaipt
+  phase: Passo B.5 complete → Passo B.6 (@pm promove PRD v0.95 → v1.0) → Passo C (implementação)
+  language: PT-PT
+
+  stack_ratificada:
+    layer_1_video:
+      primary: kling-v2 via fal.ai
+      fallback_v1_1: luma-dream-machine via fal.ai
+      fase_2_premium: runway-gen-4-turbo
+    layer_2_image:
+      primary: gemini-2.5-flash-image
+      hibrido: canva-mcp via flag canva_editable na persona
+      fallback_v1_1: ideogram-2 para text-heavy
+    layer_3_editing:
+      primary: remotion + ffmpeg, render LOCAL
+      fallback_v1_1: shotstack-api se remotion blocker
+      fase_2: remotion-lambda aws
+    layer_4_caption:
+      status: OUT OF SCOPE v1.0
+      razao: "Q-ARQ-2 Eurico 2026-04-17 — videos alturense sem voz falada"
+      stub_v1_0: text-from-script (le script.md do script-writer)
+      reactivacao_v1_1_plus: whisper-api + post-processor pt-pt
+
+  decisoes_arquitecturais:
+    Q_ARQ_1_render_location:
+      decisao: LOCAL na maquina do Eurico
+      razao: "time-to-first-video + custo marginal 0 em Fase 1 + abstraction layer preserva migration path"
+      trade_offs: "depende da maquina estar on (OK em workflow interactivo matinal)"
+      migration_fase_2: "swap EditingProvider = remotion-local → remotion-lambda, ~1-2 dias"
+
+    Q_ARQ_2_whisper_layer_4:
+      decisao: OUT OF SCOPE v1.0 (decisao do Eurico antes de @architect activar)
+      razao: "videos alturense sao musica + texto queimado + efeitos visuais — sem voz falada"
+      economia: "~0,003 eur/video + ~20s de latencia"
+      impacto_secundario: "R5 (PT-BR leaks) desce de MEDIA/ALTA para BAIXA/BAIXA"
+      reactivacao_v1_1_plus: "swap CaptionProvider na persona.yaml quando entrar cliente com narracao"
+
+    Q_ARQ_3_abstraction_pattern:
+      decisao: DAY-1 (5 interfaces abstractas desde v1.0)
+      interfaces:
+        - VideoProvider
+        - ImageProvider
+        - EditingProvider
+        - CaptionProvider (stub TextFromScriptProvider v1.0)
+        - StorageProvider
+      custo: "+2-3 dias dev inicial"
+      beneficio: "swap de provider = mudanca de string na persona.yaml; preserva principio 6 PRD (preparado Fase 2)"
+      localizacao:
+        contratos: squad/providers/interfaces/*.md
+        implementacoes: squad/providers/implementations/{provider-id}/
+
+  custos_e_latencia_ratificados:
+    custo_optimista: 0.83
+    custo_realista_com_rerolls: "1.10 a 1.35"
+    custo_unidade: EUR
+    kpi_alvo: 2
+    margem: "0.65 a 1.17"
+
+    latencia_optimista_sem_humano: "2-3 min"
+    latencia_optimista_com_humano: "3-4 min"
+    latencia_pessimista_com_humano: "11-12 min"
+    latencia_kpi: "<15 min"
+
+    economia_vs_baseline_research:
+      custo: "~0.003 eur/video (whisper out)"
+      latencia: "~20s (whisper out)"
+
+  pricings_re_verification:
+    status: NAO_EXECUTADO
+    razao: "WebSearch e WebFetch bloqueados no ambiente desta sessao do @architect (mesma limitacao que o @analyst)"
+    accao_pendente: "@devops ou Eurico re-verificar 9 URLs em docs/research/2026-04-17-video-stack-decision.md §2.2 antes de primeiro billing produtivo"
+    risco_absorvivel: "flutuacao +/-20% em pricing nao muda viabilidade (<2 eur/video) nem escolha estrutural (Remotion open-source + Kling substituivel via fal.ai)"
+    escalado_como: R22 (severidade MEDIA/MEDIA no Risk Register)
+
+  prd_alteracoes:
+    status_anterior: v0.9 draft
+    status_actual: v0.95 (arquitectura ratificada, aguarda promocao v1.0)
+
+    seccoes_actualizadas:
+      - seccao: 8 (Arquitectura)
+        delta: "Reescrita completa de 2 paragrafos + 4 bullets → 8 subseccoes (8.1 stack, 8.2 data flow, 8.3 decisoes Q-ARQ-1/2/3, 8.4 abstraction layer, 8.5 custo, 8.6 latencia, 8.7 deploy topology, 8.8 fundacao)"
+        linhas: "~300 linhas adicionadas"
+
+      - seccao: 11 (MVP Scope)
+        delta: "Whisper movido para out-of-scope v1.0 com referencia Q-ARQ-2. transcribe-and-caption passa a usar stub text-from-script. Abstraction layer listada como capacidade v1.0. v1.1 ganha re-activacao Whisper + fallbacks Luma/Ideogram/Shotstack."
+        linhas: "~15 linhas modificadas"
+
+      - seccao: 13 (Risk Register)
+        delta: "R2 MEDIA/BAIXA (era ALTA/MEDIA); R3 MEDIA/BAIXA; R5 BAIXA/BAIXA (era MEDIA/ALTA); R6 RESOLVIDO; R7 BAIXA/BAIXA. Novos R18-R22. Top-5 reorganizado: R4+R20 agora topo (qualidade+learning curve Remotion)."
+        linhas: "~50 linhas modificadas/adicionadas"
+
+  pendencias_pm_morgan:
+    questoes_validacao_pendentes_seccao_15_do_prd:
+      descricao: "As 20 questoes numeradas em §15 do PRD continuam pendentes de validacao do Eurico. Muitas agora tem enquadramento mais claro apos research + decisoes arquitecturais."
+      exemplos_simplificados_pelo_research:
+        - "Q8 (Canva vs Gemini) — resolvido: hibrido flag-based"
+        - "Q9 (1 so provider Camada 1) — confirmado"
+        - "Q10 (ComfyUI escape hatch) — confirmado com reserva"
+      exemplos_ainda_em_aberto:
+        - "Q1 (mentorados Fase 2 CLI-ready ou precisam dashboard?)"
+        - "Q4 (agendador default — Metricool vs alternativo)"
+        - "Q6 (autonomia pricing comunidade)"
+        - "Q16 (musica royalty-free vs cliente fornece licencas)"
+        - "Q17 (watermark IA visivel ou so em alt-text)"
+
+next_action:
+  description: >
+    Morgan (@pm), consome este handoff e executa os passos:
+
+    1. Lê PRD.md v0.95 completo (foco especial §8 nova + §11 revista + §13 revista).
+
+    2. Lê research completo em docs/research/2026-04-17-video-stack-decision.md (se ainda não leste).
+
+    3. Revisa as 20 questões de §15 à luz das decisões arquitecturais. Algumas
+       ficam obsoletas (Q8, Q9, Q10), outras simplificadas, outras ainda críticas
+       para o Eurico decidir (Q1, Q4, Q6, Q16, Q17). Prepara sessão de validação
+       dirigida ao Eurico — idealmente interactiva, 30-45 min.
+
+    4. Depois da validação, promove PRD.md v0.95 → v1.0:
+       - Actualiza header "Status" de "v0.95 arquitectura ratificada" → "v1.0 ratificado"
+       - Integra respostas do Eurico na secção correspondente de cada questão
+       - Remove marcadores [Assumption — validar com Eurico] substituindo por decisões finais
+       - Mantém marcadores [ARQ-2026-04-17] como trilho de auditoria
+
+    5. Emite handoff videoaipt-handoff-pm-to-sm-20260417.yaml para River (@sm)
+       com mandato: "arrancar Passo C criando primeira story = Remotion Alturense
+       Template (mitigação R4 + R20). Story deve entregar template Remotion
+       funcional para o caso Alturense, com comparação lado-a-lado contra
+       output CapCut manual actual, antes de qualquer workflow
+       daily-content-delivery."
+
+    6. Atenção especial: Passo C start = story "Remotion Alturense template",
+       NÃO o workflow daily-content-delivery. R4+R20 exigem investimento
+       focado na camada crítica antes de compor o pipeline completo.
+
+  estimated_effort: "2-4h (incluir sessão de validação com Eurico + promoção PRD + handoff para SM)"
+
+priority_questions_for_pm:
+  - id: Q-PM-1
+    question: >
+      Morgan: aceitas que o Passo C arranque com story "Remotion Alturense template"
+      em vez do workflow daily-content-delivery? O research + minha análise
+      indicam R4 e R20 como top-2 riscos — sem template funcional antes do
+      pipeline, o produto v1.0 risca underwhelming no primeiro mês.
+    architect_opinion: "sim, obrigatório. Workflow end-to-end sem template = pipeline de lama."
+    impact: "Define ordem das stories do Passo C"
+
+  - id: Q-PM-2
+    question: >
+      Morgan: as 20 questões de §15 devem ser validadas em batch (sessão única
+      30-45min com Eurico) ou faseadas por grupo (personas → journeys →
+      monetização → scope → KPIs → riscos)?
+    architect_opinion: "batch único para fechar PRD v1.0 de uma vez; algumas questões são bloqueadores mútuos"
+    impact: "Velocidade de promoção PRD v1.0"
+
+  - id: Q-PM-3
+    question: >
+      Morgan: aceitas a nota explícita de que pricings [KC-2026-01] precisam
+      re-verificação antes de primeiro billing produtivo? Ou preferes escalar
+      isso como bloqueador de v1.0 (exigir @devops re-verificar AGORA)?
+    architect_opinion: "absorvível para v1.0 MVP (flutuação ±20% não muda viabilidade); escalar como R22 no register e agendar re-verify em task separada antes de billing real"
+    impact: "Duração até arrancar implementação"
+
+after_pm_completes:
+  next_in_pipeline: "@sm (River) — cria primeira story do Passo C: Remotion Alturense Template"
+  then: "@po (Pax) — valida story (10-point checklist)"
+  then: "@dev (Dex) — implementa template Remotion Alturense (2-3 dias estimados)"
+  then: "@qa (Quinn) — QA gate + comparação lado-a-lado com CapCut manual"
+
+references:
+  - "PRD.md v0.95 (secções 8, 11, 13 actualizadas por @architect)"
+  - "docs/research/2026-04-17-video-stack-decision.md (research completo @analyst)"
+  - "docs/research/samples/pt-pt-replacements.yaml (dicionário PT-PT para futuro Whisper)"
+  - "docs/research/samples/remotion-alturense-scaffold.md (scaffold Remotion)"
+  - "docs/handoffs/archive/videoaipt-handoff-analyst-to-architect-20260417.yaml (handoff consumido)"
+  - "HANDOFF-BOOTSTRAP.md (contexto original do projecto)"
+  - "CLAUDE.md (mental model)"

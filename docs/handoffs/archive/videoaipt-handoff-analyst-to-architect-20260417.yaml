@@ -5,10 +5,10 @@ handoff:
   to_agent: architect
   to_persona: Aria
   created: 2026-04-17
-  status: pending
-  consumed: false
-  consumed_at: null
-  consumed_by: null
+  status: consumed
+  consumed: true
+  consumed_at: 2026-04-17T00:00:00Z
+  consumed_by: architect (Aria)
 
 summary: >
   Research Passo B concluído — produzido `docs/research/2026-04-17-video-stack-decision.md`
