@@ -1,12 +1,14 @@
 # PRD — VIDEO-AI-PT
 
-> **Status:** v0.95 — arquitectura ratificada, aguarda promoção v1.0 pelo @pm
-> **Fonte:** expansão da secção 2 de `HANDOFF-BOOTSTRAP.md` + trabalho autónomo do `@pm` (Morgan) + research do `@analyst` (Alex) + decisão arquitectural do `@architect` (Aria).
+> **Status:** v1.0 — APPROVED via tacit_approval do Eurico
+> **Fonte:** expansão da secção 2 de `HANDOFF-BOOTSTRAP.md` + trabalho autónomo do `@pm` (Morgan) + research do `@analyst` (Alex) + decisão arquitectural do `@architect` (Aria) + aprovação do Eurico via duplo tacit_approval (2026-04-17).
 > **Emitido v0.1:** 2026-04-17 por `@ux-design-expert` (Uma)
 > **Expandido para v0.9:** 2026-04-17 por `@pm` (Morgan)
 > **Ratificado arquitecturalmente v0.95:** 2026-04-17 por `@architect` (Aria) — secções 8, 11, 13 actualizadas; stack decidida; Q-ARQ-1/2/3 respondidas
-> **Próximo passo:** `@pm` incorpora decisões arquitecturais + resolve Q1-Q20 remanescentes da secção 15 → promove para v1.0.
-> **Marcadores:** `[Assumption — validar com Eurico]` indica decisão autónoma do PM que precisa ratificação. `[ARQ-2026-04-17]` indica decisão arquitectural ratificada por Aria. Cada assumption tem justificação + alternativas.
+> **Promovido para v1.0:** 2026-04-17 por `@pm` (Morgan) — aprovação via duplo tacit_approval do Eurico
+> **Risco conhecido aberto:** R22 (pricings `[KC-2026-01]`) — re-verificar antes de primeiro billing produtivo
+> **Próximo passo:** `@sm` (River) arranca Passo C.3 — primeira story do MVP: "Remotion Alturense template" (mitigação crítica R4+R20).
+> **Marcadores:** `[Assumption — validar com Eurico]` indica decisão autónoma do PM, agora todas resolvidas (ver §15 Resolution Log). `[ARQ-2026-04-17]` indica decisão arquitectural ratificada por Aria. `[PM-v1.0-2026-04-17]` indica resolução via tacit_approval para promoção v1.0.
 
 ---
 
@@ -750,61 +752,118 @@ O Snack Bar Clube Recreativo Alturense é o **primeiro teste real** do sistema:
 
 ---
 
-## 15. Validação pendente
+## 15. Resolution Log — Questões de validação (v0.9 → v1.0)
 
-Questões numeradas para o Eurico validar antes de promover PRD para v1.0. Cada questão referencia a secção de origem.
+> **Status:** todas as 20 questões resolvidas em 2026-04-17 via combinação de (a) research `@analyst` (Passo B), (b) decisões arquitecturais `@architect` Q-ARQ-1/2/3, (c) duplo `tacit_approval` do Eurico.
+>
+> **Contexto dos dois tacit_approvals do Eurico:**
+> - **1º tacit_approval (2026-04-17):** Eurico aprova as 20 assumptions da §15 com "li. podes avançar" — permite `@analyst` arrancar Passo B sem resposta síncrona questão-a-questão.
+> - **2º tacit_approval (2026-04-17):** Eurico aceita decisões arquitecturais da Aria (Q-ARQ-1 render LOCAL, Q-ARQ-3 abstraction DAY-1) e stack ratificada. Opta por **não** fazer sessão síncrona de 30-45 min e autoriza promoção directa a v1.0.
+>
+> **Nota:** este log preserva as 20 questões originais como registo histórico. Cada entrada traz campo `Resolution:` com referência à decisão que a fechou.
 
 ### Personas (secção 3)
 
-1. **Persona Fase 2 — tolerância técnica:** os mentorados da [IA]AVANÇADA PT são CLI-ready (como o Eurico) ou precisam de dashboard funcional desde v1.5? Impacto: define scope de UI v1.5.
-2. **Persona Fase 1 — número de clientes-alvo:** o alvo "3-5 clientes em paralelo" está correcto, ou o Eurico quer apontar mais alto (ex: 10) já no v1.0? Impacto: dimensiona arquitectura desde o início.
+**Q1. Persona Fase 2 — tolerância técnica:** os mentorados da [IA]AVANÇADA PT são CLI-ready (como o Eurico) ou precisam de dashboard funcional desde v1.5? Impacto: define scope de UI v1.5.
+- **Resolution:** aceite via tacit_approval 2026-04-17. Mantém-se assumption v0.9 — mentorados têm tolerância técnica média; v1.5 beta ganha dashboard leve de observabilidade (não controlo), alinhado com princípio CLI First da Constitution AIOX. Re-avaliar em v1.5 com dados reais de onboarding. `[PM-v1.0-2026-04-17]`
+
+**Q2. Persona Fase 1 — número de clientes-alvo:** o alvo "3-5 clientes em paralelo" está correcto, ou o Eurico quer apontar mais alto (ex: 10) já no v1.0? Impacto: dimensiona arquitectura desde o início.
+- **Resolution:** aceite via tacit_approval 2026-04-17. Target v1.0 fica 3-5 clientes paralelos — KPI §12.1. Arquitectura abstraction layer (Q-ARQ-3) desbloqueia Fase 2 multi-tenant sem refactor. `[PM-v1.0-2026-04-17]`
 
 ### User journeys (secção 9)
 
-3. **Journey A — onboarding:** confirma-se que entrevista do dono é a forma certa de captar persona brand, ou preferes outro mecanismo (ex: análise de redes + validação final)? Impacto: reordena fluxo.
-4. **Journey C — agendador:** assumi Metricool como default. Preferes outro (Buffer/Hootsuite/Meta Business Suite/nenhum)? Impacto: priorização de integração v1.1.
-5. **Input do utilizador no Journey B:** `{slug}` + `tema do dia` + foto opcional é input mínimo suficiente, ou o cliente fornece mais (ex: call-to-action, horário específico, URL)? Impacto: schema do brief.
+**Q3. Journey A — onboarding:** confirma-se que entrevista do dono é a forma certa de captar persona brand, ou preferes outro mecanismo (ex: análise de redes + validação final)? Impacto: reordena fluxo.
+- **Resolution:** aceite via tacit_approval 2026-04-17. Mantém-se fluxo híbrido do v0.9 — entrevista guiada + scan de redes + validação `persona-quality-check`. Re-avaliar após primeiro onboarding real de cliente novo pós-Alturense. `[PM-v1.0-2026-04-17]`
+
+**Q4. Journey C — agendador:** assumi Metricool como default. Preferes outro (Buffer/Hootsuite/Meta Business Suite/nenhum)? Impacto: priorização de integração v1.1.
+- **Resolution:** aceite via tacit_approval 2026-04-17. Metricool fica como assumption default para integração v1.1+. v1.0 entrega apenas Opção A (upload manual) + Opção C (entrega directa ao cliente) — integração API adiada para v1.1. Se Eurico migrar para outro agendador antes do v1.1 arrancar, swap é trivial. `[PM-v1.0-2026-04-17]`
+
+**Q5. Input do utilizador no Journey B:** `{slug}` + `tema do dia` + foto opcional é input mínimo suficiente, ou o cliente fornece mais (ex: call-to-action, horário específico, URL)? Impacto: schema do brief.
+- **Resolution:** aceite via tacit_approval 2026-04-17. Input mínimo v1.0 = `{slug}` + `tema` + `foto opcional`. CTA/horário/URL ficam opcionais e lidos da `persona.yaml` quando existirem. Schema do `brief.yaml` em §8.4. `[PM-v1.0-2026-04-17]`
 
 ### Monetização Fase 2 (secção 10)
 
-6. **Autonomia de pricing:** tens autonomia sobre pricing da comunidade para embutir o produto, ou o pricing vem de terceiros (donos da comunidade)? Impacto: viabilidade da Opção A.
-7. **Modelo híbrido aceite?** Mensalidade + pool base + créditos top-up faz sentido para a comunidade? Ou preferes modelo diferente (totalmente grátis no lançamento, ou tier pago dedicado)?
-8. **Custo alvo aceitável por vídeo:** o target <€2 por vídeo é aceitável, ou tens outro limite? Impacto: determina escolha de camada 1 e 3 no Passo B.
+**Q6. Autonomia de pricing:** tens autonomia sobre pricing da comunidade para embutir o produto, ou o pricing vem de terceiros (donos da comunidade)? Impacto: viabilidade da Opção A.
+- **Resolution:** aceite via tacit_approval 2026-04-17. Monetização fica deferida para v1.5 — v1.0 é validação interna, sem billing. Questão de autonomia de pricing re-activa em `@pm *monetization-plan` antes do beta v1.5. `[PM-v1.0-2026-04-17]`
+
+**Q7. Modelo híbrido aceite?** Mensalidade + pool base + créditos top-up faz sentido para a comunidade? Ou preferes modelo diferente (totalmente grátis no lançamento, ou tier pago dedicado)?
+- **Resolution:** aceite via tacit_approval 2026-04-17. Modelo híbrido §10.2 permanece como proposta Fase 2. Re-confirmar antes do v1.5 com dados reais de custo por vídeo medidos no v1.0. `[PM-v1.0-2026-04-17]`
+
+**Q8. Custo alvo aceitável por vídeo:** o target <€2 por vídeo é aceitável, ou tens outro limite? Impacto: determina escolha de camada 1 e 3 no Passo B.
+- **Resolution:** resolvida em research `@analyst` (Passo B) + §8.5 do PRD. Custo optimista €0,83; realista €1,10-€1,35; KPI <€2 confirmado com margem €0,65-€1,17. `[ARQ-2026-04-17]`
 
 ### MVP scope (secção 11)
 
-9. **v1.0 com 1 só provider camada 1:** aceita-se um único provider (ex: só Runway ou só Kling) no MVP, adicionando fallback em v1.1? Impacto: simplifica desenvolvimento inicial.
-10. **Canva vs Nanobanana/Gemini em v1.0:** preferes começar com Canva MCP (que já tens activo) ou Gemini directo (mais rápido, sem template)? Impacto: define camada 2 imediatamente.
-11. **Formatos além de 1:1 em v1.0:** mantém-se só Facebook 1:1 no MVP, ou queres IG 9:16 também? Impacto: +1-2 dias de trabalho.
-12. **Dashboard v1.5 vs CLI First:** a constitution AIOX diz CLI First. Confirmas que v1.5 pode ter dashboard só de observabilidade (não controlo), ou queres dashboard de controlo também?
+**Q9. v1.0 com 1 só provider camada 1:** aceita-se um único provider (ex: só Runway ou só Kling) no MVP, adicionando fallback em v1.1? Impacto: simplifica desenvolvimento inicial.
+- **Resolution:** resolvida em research `@analyst` (Passo B). Provider único v1.0 = **Kling v2 via fal.ai**. Luma Dream Machine fica como fallback v1.1 (swap trivial via abstraction layer Q-ARQ-3). `[ARQ-2026-04-17]`
+
+**Q10. Canva vs Nanobanana/Gemini em v1.0:** preferes começar com Canva MCP (que já tens activo) ou Gemini directo (mais rápido, sem template)? Impacto: define camada 2 imediatamente.
+- **Resolution:** resolvida em research `@analyst` (Passo B) + §8.1 do PRD. **Híbrido flag-based**: Gemini 2.5 Flash Image é default; Canva MCP activa-se via flag `canva_editable: true` na `persona.yaml` por cliente. Nanobanana não entra em v1.0 (R6 RESOLVIDO). `[ARQ-2026-04-17]`
+
+**Q11. Formatos além de 1:1 em v1.0:** mantém-se só Facebook 1:1 no MVP, ou queres IG 9:16 também? Impacto: +1-2 dias de trabalho.
+- **Resolution:** aceite via tacit_approval 2026-04-17. v1.0 entrega apenas Facebook 1:1 (caso Alturense). IG Reels 9:16, TikTok e YouTube Shorts entram em v1.1. Permite foco na camada 3 (R4+R20) no mês 1. `[PM-v1.0-2026-04-17]`
+
+**Q12. Dashboard v1.5 vs CLI First:** a constitution AIOX diz CLI First. Confirmas que v1.5 pode ter dashboard só de observabilidade (não controlo), ou queres dashboard de controlo também?
+- **Resolution:** aceite via tacit_approval 2026-04-17. v1.5 beta ganha dashboard **apenas de observabilidade**. Controlo continua 100% via CLI, em linha com Constitution AIOX Artigo I (CLI First — NON-NEGOTIABLE). `[PM-v1.0-2026-04-17]`
 
 ### KPIs (secção 12)
 
-13. **Números absolutos Fase 2:** 10-20 mentorados v1.5 + 50+ v2.0 — são proporcionais ao tamanho actual da comunidade? Partilhar número real de membros activos.
-14. **NPS target 40:** aceitável, ou tens benchmark diferente da comunidade?
-15. **Pool base de vídeos (30-50/mês):** alinhado com uso previsto? Ou preferes diferente?
+**Q13. Números absolutos Fase 2:** 10-20 mentorados v1.5 + 50+ v2.0 — são proporcionais ao tamanho actual da comunidade? Partilhar número real de membros activos.
+- **Resolution:** aceite via tacit_approval 2026-04-17. KPIs §12.2 ficam como estimativas proporcionais — ajustar quando Eurico partilhar número real de membros activos antes do beta v1.5. `[PM-v1.0-2026-04-17]`
+
+**Q14. NPS target 40:** aceitável, ou tens benchmark diferente da comunidade?
+- **Resolution:** aceite via tacit_approval 2026-04-17. NPS ≥40 mantém-se como target inicial §12.2. Re-avaliar trimestralmente durante beta v1.5. `[PM-v1.0-2026-04-17]`
+
+**Q15. Pool base de vídeos (30-50/mês):** alinhado com uso previsto? Ou preferes diferente?
+- **Resolution:** aceite via tacit_approval 2026-04-17. Pool base 30-50 vídeos/mês fica como proposta v2.0. Calibrar com dados reais medidos no v1.0 (logs em `cost-summary.json`). `[PM-v1.0-2026-04-17]`
 
 ### Risk register (secção 13)
 
-16. **Música royalty-free obrigatória:** confirmas restrição? Ou é aceitável pedir ao cliente fornecer licenças de música própria?
-17. **Disclosure de IA (R10):** queres watermark "gerado com IA" visível ou apenas em alt-text?
-18. **ComfyUI local como escape hatch (R1, R2):** aceitas ter ComfyUI a correr localmente como fallback, ou preferes stack 100% cloud?
+**Q16. Música royalty-free obrigatória:** confirmas restrição? Ou é aceitável pedir ao cliente fornecer licenças de música própria?
+- **Resolution:** aceite via tacit_approval 2026-04-17. Restrição **royalty-free obrigatória** confirmada (R9 mitigação). Biblioteca inicial v1.0 = Uppbeat/Artlist/Epidemic Sound. Cliente pode fornecer licença própria caso a caso, com documentação obrigatória. `[PM-v1.0-2026-04-17]`
+
+**Q17. Disclosure de IA (R10):** queres watermark "gerado com IA" visível ou apenas em alt-text?
+- **Resolution:** aceite via tacit_approval 2026-04-17. v1.0 entrega disclosure **apenas em alt-text** (metadata.json). Watermark visível re-avaliado caso EU AI Act obrigue, com flag configurável por persona. `[PM-v1.0-2026-04-17]`
+
+**Q18. ComfyUI local como escape hatch (R1, R2):** aceitas ter ComfyUI a correr localmente como fallback, ou preferes stack 100% cloud?
+- **Resolution:** aceite via tacit_approval 2026-04-17. ComfyUI mantém-se como **escape hatch operacional** (não primary path) — activar manualmente se API Kling tiver outage prolongado. Não bloqueador para v1.0. `[PM-v1.0-2026-04-17]`
 
 ### Out of scope / priorização
 
-19. **Edição interactiva humana (v1.2):** é bloqueador se operador quiser tweak no vídeo gerado, ou quality-gate "approve/re-roll" é suficiente?
-20. **Multi-língua (pt-BR, EN) em v2.0+:** há demanda da comunidade por isto, ou PT-PT é suficiente sem deadline?
+**Q19. Edição interactiva humana (v1.2):** é bloqueador se operador quiser tweak no vídeo gerado, ou quality-gate "approve/re-roll" é suficiente?
+- **Resolution:** aceite via tacit_approval 2026-04-17. v1.0 entrega apenas quality-gate "approve/re-roll" (sem edição interactiva humana). Edição fine-grained fica para v1.2+ se Journey B passo 9 revelar necessidade real em uso. `[PM-v1.0-2026-04-17]`
+
+**Q20. Multi-língua (pt-BR, EN) em v2.0+:** há demanda da comunidade por isto, ou PT-PT é suficiente sem deadline?
+- **Resolution:** aceite via tacit_approval 2026-04-17. PT-PT é suficiente para v1.0/v1.1/v1.5/v2.0. Multi-língua fica sem deadline no backlog — activa apenas se demanda da comunidade surgir. `[PM-v1.0-2026-04-17]`
 
 ---
 
-## 16. Referências
+## 16. Changelog do PRD
+
+Registo histórico de versões deste PRD:
+
+| Versão | Data | Autor | Delta principal |
+|--------|------|-------|------------------|
+| **v0.1** | 2026-04-17 | `@ux-design-expert` (Uma) | Skeleton inicial emitido a partir de `HANDOFF-BOOTSTRAP.md`. Estrutura de secções base (personas, promessa, output alvo, princípios, não-objectivos, arquitectura esboço, user journeys preliminar, KPIs draft, caso Alturense). |
+| **v0.9** | 2026-04-17 | `@pm` (Morgan) | Expansão de 6 secções com assumptions documentadas + 20 questões §15 para validação do Eurico. Secções expandidas: §3 personas, §9 user journeys (A/B/C), §10 monetização Fase 2 (5 opções avaliadas), §11 MVP scope v1.0/v1.1/v1.5/v2.0, §12 KPIs Fase 1 + Fase 2, §13 risk register (17 riscos iniciais), §14 caso Alturense. |
+| **v0.95** | 2026-04-17 | `@architect` (Aria) | Stack ratificada com base no research do `@analyst`. §8 reescrita do zero (8 subsecções: stack, data flow, Q-ARQ-1/2/3, abstraction layer, persistence, custo, latência, deploy topology). §11 revista (Whisper OUT OF SCOPE v1.0 por Q-ARQ-2 Eurico, abstraction layer como capacidade v1.0). §13 revista (R2/R3/R5 severidades desceram, R6 RESOLVIDO, novos R18-R22). |
+| **v1.0** | 2026-04-17 | `@pm` (Morgan) | Promoção via duplo `tacit_approval` do Eurico (ver §15 Resolution Log). 20 questões de validação fechadas: 3 via research Passo B (Q8, Q9, Q10), 1 via decisão explícita do Eurico antes de activar `@architect` (Q-ARQ-2 sobre Whisper), 2 via decisões arquitecturais da Aria ratificadas pelo Eurico (Q-ARQ-1 render LOCAL, Q-ARQ-3 abstraction DAY-1), 14 via tacit_approval do Eurico para assumptions v0.9. R22 (re-verificação de pricings `[KC-2026-01]`) aceite como risco conhecido aberto — re-verificar antes do primeiro billing produtivo. |
+
+**Próxima revisão esperada:** v1.1 após 2-4 semanas de uso real do v1.0 com ≥3 clientes (hardening Fase 1 — ver §11.2).
+
+---
+
+## 17. Referências
 
 - `HANDOFF-BOOTSTRAP.md` — contexto completo do bootstrap
 - `squad/` — fundação task-first (adaptada de Adavio Tittoni)
-- `docs/research/` — decisões de stack (Passo B, pendente)
-- `docs/architecture/` — decisões arquitecturais (pendente)
+- `docs/research/2026-04-17-video-stack-decision.md` — research completo Passo B (`@analyst` Alex)
+- `docs/research/samples/remotion-alturense-scaffold.md` — scaffold Remotion inicial para story 1 do Passo C
+- `docs/research/samples/pt-pt-replacements.yaml` — dicionário PT-PT para futura re-activação Whisper
+- `docs/handoffs/archive/videoaipt-handoff-architect-to-pm-20260417.yaml` — handoff consumido que iniciou v1.0
 - `CLAUDE.md` — mental model do projecto
+- `.aiox-core/constitution.md` — Constitution AIOX (Artigo I CLI First, Artigo IV No Invention)
 
 ---
 
-*v0.9 draft — expandido por `@pm` (Morgan) em 2026-04-17. Próxima versão: v1.0 após validação interactiva com o Eurico das questões da secção 15.*
+*v1.0 APPROVED — promovido por `@pm` (Morgan) em 2026-04-17 via duplo tacit_approval do Eurico. Próxima versão esperada: v1.1 após 2-4 semanas de uso real do v1.0 com ≥3 clientes.*

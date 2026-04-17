@@ -10,7 +10,7 @@
 
 | ID | From → To | Summary | Created |
 |----|-----------|---------|---------|
-| videoaipt-handoff-architect-to-pm-20260417 | architect (Aria) → pm (Morgan) | Passo B.5 ratificacao arquitectural concluida. Stack v1.0 decidida (Kling v2 / Gemini 2.5 Flash Image / Remotion LOCAL / text-from-script stub). Q-ARQ-1 LOCAL, Q-ARQ-2 Whisper OUT OF SCOPE (Eurico), Q-ARQ-3 abstraction day-1. PRD v0.9 → v0.95, secções 8/11/13 actualizadas. Morgan deve validar Q1-Q20 com Eurico, promover PRD v1.0, emitir handoff para @sm começar Passo C com story "Remotion Alturense template" (mitigação R4+R20). | 2026-04-17 |
+| videoaipt-handoff-pm-to-sm-20260417 | pm (Morgan) → sm (River) | PRD v1.0 APPROVED via duplo tacit_approval do Eurico. 20 questões §15 resolvidas (Resolution Log). Passo C.3 arranca — River cria primeira story MVP: "Remotion Alturense template" (mitigação crítica R4+R20). Story precede workflow daily-content-delivery — template é dependency directa da Camada 3. Inputs: PRD v1.0 §8/§11/§13/§14, research, scaffold Remotion já produzido. Next: @po valida draft (10-point), @dev implementa (2-3 dias), @qa gate com comparação lado-a-lado contra CapCut. | 2026-04-17 |
 
 ---
 
@@ -22,6 +22,7 @@
 | videoaipt-handoff-pm-to-eurico-20260417 | pm (Morgan) → eurico (human) | 2026-04-17 | eurico (tacit_approval) |
 | videoaipt-handoff-eurico-to-analyst-20260417 | eurico (human) → analyst (Alex) | 2026-04-17 | analyst (Alex) |
 | videoaipt-handoff-analyst-to-architect-20260417 | analyst (Alex) → architect (Aria) | 2026-04-17 | architect (Aria) |
+| videoaipt-handoff-architect-to-pm-20260417 | architect (Aria) → pm (Morgan) | 2026-04-17 | pm (Morgan) |
 
 ---
 

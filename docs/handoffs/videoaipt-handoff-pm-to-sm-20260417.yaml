@@ -1,0 +1,239 @@
+handoff:
+  id: videoaipt-handoff-pm-to-sm-20260417
+  from_agent: pm
+  from_persona: Morgan
+  to_agent: sm
+  to_persona: River
+  created: 2026-04-17
+  status: pending
+  consumed: false
+  consumed_at: null
+  consumed_by: null
+
+summary: >
+  PRD v1.0 APPROVED via duplo tacit_approval do Eurico. Stack ratificada,
+  arquitectura Q-ARQ-1/2/3 decidida, 20 questões §15 resolvidas (Resolution
+  Log). Passo C.3 arranca agora — River (@sm) cria a PRIMEIRA STORY do MVP:
+  "Remotion Alturense template" — mitigação crítica R4+R20 do risk register.
+  Esta story precede o workflow `daily-content-delivery` porque o template é
+  dependency directa da Camada 3 (edição programática); sem template
+  funcional, o pipeline end-to-end fica "pipeline de lama".
+
+priority: HIGH
+
+first_story_mandate:
+  story_title_suggerido: "Remotion Alturense template — 1ª peça funcional"
+  razao_de_ser_primeira: >
+    R4 (Camada 3 Remotion não atinge qualidade CapCut no primeiro mês —
+    ALTA/ALTA) e R20 (learning curve Remotion atrasa v1.0 em 1-2 semanas —
+    MÉDIA/ALTA) são os dois riscos top-5 com maior probabilidade combinada.
+    A arquitectura @architect identifica esta story como "mitigação crítica"
+    explícita em §13.5 do PRD e em §11.1 ("deve ser primeira story do Passo
+    C antes do workflow `daily-content-delivery`").
+  antes_de_qualquer_outra_story: true
+  workflow_daily_content_delivery_so_depois: true
+
+context:
+  project: VIDEO-AI-PT
+  project_root: C:\Users\XPS\Documents\videoaipt
+  phase: Passo C.3 (primeira story) após promoção PRD v1.0
+  language: PT-PT
+  prd_version: v1.0
+  prd_status: APPROVED via tacit_approval Eurico 2026-04-17
+
+  caso_alturense_specs:
+    cliente: "Snack Bar Clube Recreativo Alturense"
+    formato: "Facebook 1:1"
+    duracao_target_s: "20-30"
+    cadencia: "1 video/dia"
+    tom: "paletas quentes estilo Atum à Algarvia"
+    elementos_obrigatorios:
+      - musica sobreposta (royalty-free)
+      - texto animado (overlays)
+      - transições entre clips (fade 0.5s)
+      - legendas queimadas (de script.md, via Remotion <Subtitle/>)
+      - efeitos visuais subtis
+    baseline_manual_actual: "Lovart → Canva → CapCut, ~2h de trabalho"
+    metrica_sucesso: "<15 min end-to-end + qualidade editorial equivalente ou superior ao manual CapCut"
+    sem_voz_falada: true  # Q-ARQ-2 do Eurico — decisiva para scope
+
+  stack_ratificada:
+    camada_1_video:
+      primary: kling-v2 via fal.ai
+      custo_por_video: "~$0,75 (20s)"
+    camada_2_imagem:
+      primary: gemini-2.5-flash-image
+      flag_hibrido: "canva_editable na persona.yaml"
+    camada_3_edicao:
+      primary: remotion + ffmpeg, render LOCAL
+      provider_interface: EditingProvider
+      implementacao_v1_0: remotion-local
+    camada_4_captions:
+      provider_interface: CaptionProvider
+      implementacao_v1_0_stub: text-from-script (lê script.md)
+      whisper_out_of_scope: true
+
+  abstraction_layer_day_1:
+    decisao: Q-ARQ-3 DAY-1
+    interfaces:
+      - VideoProvider
+      - ImageProvider
+      - EditingProvider
+      - CaptionProvider (stub TextFromScriptProvider v1.0)
+      - StorageProvider
+    localizacao:
+      contratos: squad/providers/interfaces/*.md
+      implementacoes: squad/providers/implementations/{provider-id}/
+    impacto_story_1: >
+      A story 1 deve já consumir EditingProvider (não chamar Remotion
+      directamente). A implementação `remotion-local` nasce nesta story,
+      respeitando a interface documentada pela Aria.
+
+  risk_register_top_5_pos_ratificacao:
+    1: "R4 — Qualidade Remotion vs CapCut no primeiro mês (ALTA/ALTA) — MITIGADO por esta story"
+    2: "R20 — Learning curve Remotion atrasa v1.0 em 1-2 semanas (MÉDIA/ALTA) — MITIGADO por esta story"
+    3: "R13 — Qualidade output vs cliente final (ALTA/MÉDIA) — validado pela comparação lado-a-lado"
+    4: "R1 — Dependência APIs externas (ALTA/MÉDIA) — fora do scope desta story mas Kling aparece aqui"
+    5: "R9 — Direitos de música (ALTA/ALTA se não mitigado) — biblioteca royalty-free obrigatória"
+
+story_inputs:
+  prd:
+    path: "C:\\Users\\XPS\\Documents\\videoaipt\\PRD.md"
+    seccoes_chave:
+      - "§8.1 Stack ratificada"
+      - "§8.2 Data flow end-to-end (bloco Remotion em assemble-final-video)"
+      - "§8.3 Q-ARQ-3 Abstraction pattern — EditingProvider interface"
+      - "§8.4 Data persistence pattern (estrutura squad/data/{slug}/videos/{date}/)"
+      - "§11.1 MVP Scope v1.0 (Template Alturense-default como SIM)"
+      - "§13.5 Top-5 riscos pós-ratificação — R4 e R20 no topo"
+      - "§14 Caso de teste #1 — Alturense"
+
+  research:
+    path: "C:\\Users\\XPS\\Documents\\videoaipt\\docs\\research\\2026-04-17-video-stack-decision.md"
+    notas: "Research completo do @analyst com comparação Kling/Runway/Luma, Gemini/Ideogram/Canva, Remotion/Shotstack. Validar secções Remotion e custo unitário."
+
+  scaffold_remotion:
+    path: "C:\\Users\\XPS\\Documents\\videoaipt\\docs\\research\\samples\\remotion-alturense-scaffold.md"
+    notas: "Scaffold Remotion inicial já produzido. Story deve consumir/expandir este scaffold, não re-inventar."
+
+  squad_foundation:
+    path: "C:\\Users\\XPS\\Documents\\videoaipt\\squad\\"
+    notas: "Fundação task-first (5 agentes, 21 tasks, 2 workflows) preservada. A story integra-se com agente `script-writer` (Reel) que produz shot-plan.yaml + text-overlays.yaml + script.md."
+
+acceptance_criteria_hints:
+  descricao: >
+    Sugestões de alto nível para o @sm refinar no template da story.
+    NÃO são AC finais — o @sm escreve os AC definitivos seguindo o
+    template AIOX de story e depois valida com @po.
+  hints:
+    - "Template Remotion inicial em `squad/templates/remotion/alturense-default/` com composition 20-30s, 1:1, 30fps, H.264"
+    - "Composition aceita 2 clips de vídeo IA (tipicamente 10s cada) vindos de Camada 1 via EditingProvider input"
+    - "Overlays de texto configuráveis a partir de `text-overlays.yaml` (produzido pelo script-writer Reel)"
+    - "Legendas queimadas via `<Subtitle/>` lidas de `script.md` (stub text-from-script)"
+    - "Faixa de música royalty-free sobreposta (biblioteca Uppbeat/Artlist/Epidemic Sound — documentar licença)"
+    - "Transição fade 0.5s entre clips"
+    - "EditingProvider interface implementada como `remotion-local` (consumir contrato da Aria, não hardcoded)"
+    - "Render local via Node + headless Chromium + FFmpeg encode H.264"
+    - "Output em `squad/data/alturense/videos/{YYYY-MM-DD}/final.mp4`"
+    - "Paleta de cores quente derivada da persona Alturense (café/dourado/verde-oliva)"
+    - "Comparação lado-a-lado contra output CapCut manual actual (1 vídeo real Alturense) é critério de QA — @qa gate só fecha se qualidade editorial for equivalente ou superior"
+    - "Documentação inline no template (comentários TypeScript/TSX) suficiente para outro dev replicar"
+    - "PT-PT no código, comentários, nomes de ficheiros"
+
+estimated_effort: "2-3 dias de @dev (incluindo learning curve Remotion — R20)"
+
+next_action:
+  description: >
+    River (@sm), consome este handoff e executa:
+
+    1. Lê PRD.md v1.0 na íntegra (foco em §8.1, §8.2, §8.3 Q-ARQ-3, §8.4,
+       §11.1, §13.5, §14).
+
+    2. Lê `docs/research/2026-04-17-video-stack-decision.md` (foco em
+       Remotion e custo Kling).
+
+    3. Lê `docs/research/samples/remotion-alturense-scaffold.md` (scaffold
+       existente — story consome, não re-inventa).
+
+    4. Executa `*draft` (ou `*create-story`) para criar a story
+       "Remotion Alturense template" usando o template AIOX de story
+       apropriado (brownfield se `squad/` já existe, greenfield caso
+       contrário — avalia).
+
+    5. Respeita mandato: esta story é a PRIMEIRA do Passo C, ANTES de
+       qualquer story relacionada com `daily-content-delivery` workflow.
+
+    6. Output esperado: `docs/stories/active/{epic}.{story}.story.md` com
+       AC claros, File List inicial, links para PRD v1.0, handoff consumido.
+
+    7. Atenção ao scope: a story é sobre TEMPLATE REMOTION (Camada 3), NÃO
+       o pipeline end-to-end. Integração com script-writer Reel (Camada 1
+       plan) é input assumido, não output desta story.
+
+    8. Antes de fechar draft, cria próximo handoff em
+       `videoaipt-handoff-sm-to-po-20260417.yaml` para Pax (@po) validar
+       o draft (10-point checklist) — ver regra @po em
+       `.claude/rules/agent-authority.md`.
+
+  estimated_effort: "30-45 min (leitura + draft da story + handoff para @po)"
+
+after_sm_completes:
+  next_in_pipeline: "@po (Pax) — valida story draft com 10-point checklist"
+  then: "@dev (Dex) — implementa template Remotion Alturense (2-3 dias estimados)"
+  then: "@qa (Quinn) — QA gate obrigatório com comparação lado-a-lado contra CapCut manual"
+  then: "Se @qa PASS, próximas stories do Passo C podem arrancar: `daily-content-delivery` workflow, restantes Providers"
+
+priority_questions_for_sm:
+  - id: Q-SM-1
+    question: >
+      River: escolhes template brownfield ou greenfield para esta story?
+      O `squad/` já existe (foundation task-first com 5 agentes+21 tasks+2
+      workflows), mas o template Remotion e os Providers interfaces são
+      conteúdo novo.
+    pm_opinion: >
+      Brownfield. A fundação `squad/` é o terreno; a story adiciona
+      componentes (`squad/templates/remotion/`, `squad/providers/interfaces/`,
+      `squad/providers/implementations/remotion-local/`) sem tocar nas 21
+      tasks existentes.
+    impact: "Define qual template AIOX de story usar"
+
+  - id: Q-SM-2
+    question: >
+      River: dividir em 2 sub-stories (A: contratos Providers + B: template
+      Remotion Alturense) ou uma story única?
+    pm_opinion: >
+      Uma story única mas com AC claramente segmentados. Os contratos
+      VideoProvider/ImageProvider/CaptionProvider/StorageProvider podem ser
+      stubs (documentação + interface) nesta story, EditingProvider é
+      implementação completa. Isto mantém abstraction layer como "dia-1"
+      (Q-ARQ-3) sem explodir scope.
+    impact: "Velocidade de @dev implementation"
+
+  - id: Q-SM-3
+    question: >
+      River: como queres que a story registe a "comparação lado-a-lado
+      contra CapCut" — como QA criterion explícito ou como acceptance
+      criterion?
+    pm_opinion: >
+      AC explícito. A qualidade editorial equivalente ou superior é o
+      critério de aceitação do cliente (Eurico). @qa valida; se falhar,
+      story volta a @dev. Alinhado com R4 mitigation (§13.5).
+    impact: "Define gate de qualidade da story"
+
+references:
+  - "PRD.md v1.0 (APPROVED 2026-04-17)"
+  - "docs/research/2026-04-17-video-stack-decision.md"
+  - "docs/research/samples/remotion-alturense-scaffold.md"
+  - "docs/research/samples/pt-pt-replacements.yaml"
+  - "docs/handoffs/archive/videoaipt-handoff-architect-to-pm-20260417.yaml"
+  - "HANDOFF-BOOTSTRAP.md"
+  - "CLAUDE.md"
+  - ".aiox-core/constitution.md (Artigos I CLI First, IV No Invention)"
+  - ".claude/rules/agent-authority.md (autoridades @sm, @po, @dev, @qa, @devops)"
+
+known_constraints:
+  - "Article IV (No Invention): story só pode incluir o que já está documentado no PRD v1.0 + research + decisões arquitecturais. Sem invenção de features."
+  - "R22 aceite como risco aberto: pricings [KC-2026-01] ainda por re-verificar antes do primeiro billing produtivo — não bloqueia esta story técnica."
+  - "PT-PT obrigatório (Constitution AIOX + language-standards rule)."
+  - "Absolute imports obrigatório quando a story tocar TypeScript/JavaScript."
+  - "Agente @devops tem push EXCLUSIVO — @dev, @qa, @sm não podem git push."
