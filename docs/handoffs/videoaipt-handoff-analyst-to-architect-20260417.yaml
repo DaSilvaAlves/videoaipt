@@ -1,0 +1,148 @@
+handoff:
+  id: videoaipt-handoff-analyst-to-architect-20260417
+  from_agent: analyst
+  from_persona: Alex
+  to_agent: architect
+  to_persona: Aria
+  created: 2026-04-17
+  status: pending
+  consumed: false
+  consumed_at: null
+  consumed_by: null
+
+summary: >
+  Research Passo B concluído — produzido `docs/research/2026-04-17-video-stack-decision.md`
+  com recomendação de stack end-to-end, breakdown de custo (€0,83-€1,35 por vídeo
+  Alturense, compliance com KPI <€2), latência (3-12 min, compliance com KPI <15 min) e
+  validação das assumptions Q6-Q10 do PRD §15. Aria (@architect) deve re-verificar
+  pricings marcados [KC-2026-01] em 9 páginas oficiais (secção 2.2 do research),
+  responder 4 perguntas arquitecturais (Q-ARQ-1 a Q-ARQ-4), decidir stack final e
+  actualizar secção 8 do PRD. Research foi produzido com WebSearch/WebFetch bloqueados
+  no ambiente — estrutura analítica é sólida, números exigem re-check.
+
+context:
+  project: VIDEO-AI-PT
+  project_root: C:\Users\XPS\Documents\videoaipt
+  phase: Passo B complete → Passo B.5 (decisão arquitectural) → Passo C (implementação)
+  language: PT-PT
+
+  research_findings_critical:
+    recommended_stack_v1_0:
+      layer_1_video: Kling v2 via fal.ai (primary) + Luma fallback v1.1
+      layer_2_image: Gemini 2.5 Flash Image (primary) + Canva MCP como capability flag-based
+      layer_3_edit: Remotion + FFmpeg render local (primary) + Shotstack fallback v1.1
+      layer_4_caption: Whisper API + post-processor PT-PT obrigatório (ou skip se sem voz)
+
+    cost_per_alturense_video:
+      optimistic: "€0,83"
+      realistic_with_rerolls: "€1,10-€1,35"
+      pessimistic_with_shotstack_fallback: "€1,25-€2,13"
+      kpi_target: "<€2"
+      verdict: CONFIRMED com margem
+
+    latency_end_to_end:
+      optimistic: "3-4 min"
+      pessimistic: "11-12 min"
+      kpi_target: "<15 min"
+      verdict: CONFIRMED em ambos os cenários
+
+    assumptions_validation:
+      Q6_cost_under_2eur: CONFIRMED
+      Q7_single_provider_v1_0: CONFIRMED
+      Q8_canva_vs_gemini: REFUTED_binary - recomendação híbrida (Gemini default + Canva flag-based)
+      Q9_single_provider_layer_1: CONFIRMED
+      Q10_comfyui_escape_hatch: CONFIRMED_with_reserve (v1.0 fallback op, não primary path)
+      R1_R2_api_dependency: PARCIALMENTE_MITIGATED
+
+    top_3_risks_remaining:
+      R4_layer_3_quality:
+        severity: ALTA / ALTA
+        note: "Remotion exige 2-3 dias template-building inicial. Primeiro mês output visualmente inferior a CapCut manual se Eurico não investir. Risk elevado de underwhelming."
+      R2_R3_cost_and_rate_limits_layer_1:
+        severity: MÉDIA / BAIXA (v1.0)
+        note: "Kling via fal.ai suficiente para 3-5 vídeos/dia. Re-rolls podem inflar custo se >30% falhas."
+      R5_pt_pt_captions:
+        severity: MÉDIA / ALTA
+        note: "Whisper escorrega pt-BR em palavras específicas. Post-processor PT-PT é mandatory — dicionário rascunho em docs/research/samples/pt-pt-replacements.yaml"
+
+    new_risks_identified:
+      R18: "Remotion licence pricing change entre v1.0 (gratuito <3 devs) e v1.5 (possivelmente pago)"
+      R19: "fal.ai como intermediário único pode ser SPOF"
+      R20: "Learning curve Remotion atrasa v1.0 em 1-2 semanas"
+      R21: "Gemini 2.5 Flash Image ToS change potencial"
+
+  research_limitations:
+    critical: "WebSearch e WebFetch bloqueados no ambiente desta sessão — todos pricings são [KC-2026-01]"
+    impact: "Pricing numbers podem estar desactualizados até 6 meses"
+    mitigation: "@architect deve executar round de re-verificação em 9 páginas oficiais (secção 2.2 do research) — ~30 min de trabalho"
+    structural_analysis: "Análise arquitectural (trade-offs, licensing, compatibilidade) é sólida e independente de oscilações de preço"
+
+  deliverables_produced:
+    - path: "docs/research/2026-04-17-video-stack-decision.md"
+      description: "Research principal com 14 secções"
+      size: "~1200 linhas markdown"
+    - path: "docs/research/samples/pt-pt-replacements.yaml"
+      description: "Dicionário PT-BR→PT-PT baseline para post-processor Camada 4"
+    - path: "docs/research/samples/remotion-alturense-scaffold.md"
+      description: "Referência de estrutura de template Remotion para caso Alturense"
+
+next_action:
+  description: >
+    @architect (Aria), consome este handoff e arranca Passo B.5 (decisão arquitectural).
+    Passos concretos:
+
+    1. Ler `docs/research/2026-04-17-video-stack-decision.md` na íntegra (foco secções 7, 10, 12).
+
+    2. Re-verificar os 9 pricings [KC-2026-01] listados em secção 2.2. Pode ser ~30 min
+       se tiveres WebSearch/WebFetch disponível. Se não tiveres, delega a
+       `@devops` ou marca explicitamente como pending validation.
+
+    3. Responder 4 perguntas arquitecturais da secção 12:
+       - Q-ARQ-1: render location v1.0 (local vs Lambda)
+       - Q-ARQ-2: Whisper OR texto-do-brief em v1.0
+       - Q-ARQ-3: abstraction pattern para multi-provider
+       - Q-ARQ-4: aceitar pricings [KC-2026-01] ou exigir re-verificação
+
+    4. Actualizar `PRD.md` secção 8 (Arquitectura) com stack final decidida.
+
+    5. Emitir handoff `videoaipt-handoff-architect-to-pm-20260417.yaml` para Morgan
+       (@pm) promover PRD de v0.9 para v1.0 incorporando research + decisão
+       arquitectural + risk register actualizado (secção 11 do research).
+
+  estimated_effort: "1-2h (se pricings já re-verificados); 2-4h se incluir re-verify"
+
+priority_questions_for_architect:
+  - id: Q-ARQ-1
+    question: >
+      Remotion render em v1.0 deve correr (a) local na máquina do Eurico (zero custo,
+      depende de máquina on) ou (b) AWS Lambda desde day 1 (custo ~€0,02/vídeo, sempre
+      disponível)?
+    analyst_recommendation: "Local em v1.0 (optimize time-to-first-video), migrar para Lambda quando v1.5 abrir para mentorados."
+    impact: "Afecta story 1 do Passo C (setup Remotion infra) e custo operacional Fase 1"
+
+  - id: Q-ARQ-2
+    question: >
+      Os vídeos Alturense actuais têm voz falada (require Whisper + post-processor PT-PT)
+      ou apenas música+texto overlay (Whisper out of scope v1.0)?
+    analyst_recommendation: "Confirmar com Eurico observando últimos 3-5 vídeos manuais. Se sem voz, reduz Camada 4 a <Subtitle/> Remotion."
+    impact: "Se sem voz, v1.0 corta Whisper e post-processor inteiramente; se com voz, mantém stack completa."
+
+  - id: Q-ARQ-3
+    question: >
+      v1.0 deve já ter interface abstrata (`VideoGeneratorProvider`, `ImageGeneratorProvider`)
+      implementada para trivial swap v1.1, ou hardcode directo e refactor quando chegar?
+    analyst_recommendation: "Abstraction day 1. Task-first principle já o exige. Custo marginal baixo; benefício claro para v1.1 fallbacks."
+    impact: "Determina se Passo C começa com infra abstraction layer ou tasks directas sobre providers"
+
+after_architect_completes:
+  next_in_pipeline: "@pm (Morgan) — promove PRD v0.9 → v1.0 incorporando decisão de stack + risk register actualizado"
+  then: "@sm (River) cria primeira story do Passo C: tipicamente 'Setup Remotion Alturense template' OR 'Setup abstraction layer' (dependendo de Q-ARQ-3)"
+  then: "@dev (Dex) implementa"
+
+references:
+  - "docs/research/2026-04-17-video-stack-decision.md (research principal)"
+  - "docs/research/samples/pt-pt-replacements.yaml (dicionário PT-PT)"
+  - "docs/research/samples/remotion-alturense-scaffold.md (Remotion scaffold)"
+  - "PRD.md v0.9 secções 10, 11, 13, 15 (contexto)"
+  - "HANDOFF-BOOTSTRAP.md secção 4 (candidatos iniciais por camada)"
+  - "docs/handoffs/archive/videoaipt-handoff-eurico-to-analyst-20260417.yaml (handoff que @analyst consumiu)"

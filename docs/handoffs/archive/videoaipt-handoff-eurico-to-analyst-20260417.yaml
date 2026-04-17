@@ -5,10 +5,10 @@ handoff:
   to_agent: analyst
   to_persona: Alex
   created: 2026-04-17
-  status: pending
-  consumed: false
-  consumed_at: null
-  consumed_by: null
+  status: consumed
+  consumed: true
+  consumed_at: 2026-04-17T23:10:00Z
+  consumed_by: analyst (Alex)
 
 summary: >
   Passo A concluído (bootstrap + squad renomeado) e Passo A.5 concluído (PRD v0.9 com 20

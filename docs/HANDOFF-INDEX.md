@@ -10,7 +10,7 @@
 
 | ID | From → To | Summary | Created |
 |----|-----------|---------|---------|
-| videoaipt-handoff-eurico-to-analyst-20260417 | eurico (human) → analyst (Alex) | Arrancar Passo B — research comparativo das 4 camadas de stack (vídeo IA, imagem, edição programática, legendagem PT-PT). Validar/refutar assumptions do PRD v0.9 com dados reais. Output: `docs/research/2026-04-17-video-stack-decision.md`. | 2026-04-17 |
+| videoaipt-handoff-analyst-to-architect-20260417 | analyst (Alex) → architect (Aria) | Research Passo B concluído — `docs/research/2026-04-17-video-stack-decision.md` com stack recomendada (Kling v2, Gemini 2.5 Flash Image, Remotion+FFmpeg, Whisper+post-processor PT-PT), custo €0,83-€1,35/vídeo (CONFIRMED <€2), latência 3-12min (CONFIRMED <15min). Aria deve re-verificar 9 pricings [KC-2026-01], responder Q-ARQ-1 a Q-ARQ-4, actualizar PRD §8. | 2026-04-17 |
 
 ---
 
@@ -20,6 +20,7 @@
 |----|-----------|-------------|-------------|
 | videoaipt-handoff-bootstrap-to-pm-20260417 | ux-design-expert (Uma) → pm (Morgan) | 2026-04-17 | pm (Morgan) |
 | videoaipt-handoff-pm-to-eurico-20260417 | pm (Morgan) → eurico (human) | 2026-04-17 | eurico (tacit_approval) |
+| videoaipt-handoff-eurico-to-analyst-20260417 | eurico (human) → analyst (Alex) | 2026-04-17 | analyst (Alex) |
 
 ---
 

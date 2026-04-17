@@ -1,0 +1,138 @@
+# PT-PT Replacements Dictionary — REFERENCE ONLY
+# Fonte: Research 2026-04-17 por @analyst
+# Propósito: post-processor para Camada 4 (Whisper API output → PT-PT clean)
+# Uso: squad/scripts/pt-pt-post-processor.js aplica estas substituições com word boundaries
+
+# IMPORTANTE: este ficheiro é REFERÊNCIA para @dev implementar depois. Não é runtime config.
+# Quando promovido a produção, viverá em: squad/data/_global/pt-pt-replacements.yaml
+
+version: 0.1.0
+last_updated: 2026-04-17
+status: draft
+
+# Substituições obrigatórias — palavras funcionais frequentes
+pronouns_and_forms:
+  - from: "você"
+    to: "tu"
+    case_sensitive: false
+    context: "Whisper tende a usar 'você' como default pt-BR"
+  - from: "vocês"
+    to: "vocês"
+    note: "Mantém — palavra válida em PT-PT"
+  - from: "te amo"
+    to: "amo-te"
+    note: "Ordem enclítica PT-PT"
+  - from: "me dá"
+    to: "dá-me"
+    note: "Ordem enclítica PT-PT"
+
+# Vocabulário técnico quotidiano
+everyday_vocabulary:
+  - from: "celular"
+    to: "telemóvel"
+  - from: "ônibus"
+    to: "autocarro"
+  - from: "geladeira"
+    to: "frigorífico"
+  - from: "arquivo"
+    to: "ficheiro"
+    context_technical: true
+  - from: "tela"
+    to: "ecrã"
+  - from: "mouse"
+    to: "rato"
+    context_technical: true
+  - from: "caixa postal"
+    to: "caixa de correio"
+  - from: "café da manhã"
+    to: "pequeno-almoço"
+  - from: "xícara"
+    to: "chávena"
+  - from: "sorvete"
+    to: "gelado"
+  - from: "time"
+    to: "equipa"
+
+# Verbos — formas características
+verbs:
+  - from: "deletar"
+    to: "eliminar"
+  - from: "deletado"
+    to: "eliminado"
+  - from: "deletada"
+    to: "eliminada"
+  - from: "printar"
+    to: "imprimir"
+  - from: "setar"
+    to: "definir"
+  - from: "checar"
+    to: "verificar"
+  - from: "buildar"
+    to: "compilar"
+  - from: "bacana"
+    to: "fixe"
+  - from: "legal"
+    to: "fixe"
+    note: "Quando usado como adjectivo coloquial (não 'legal' jurídico)"
+
+# Food-specific (relevante para caso Alturense)
+food_context:
+  - from: "salada"
+    to: "salada"
+    note: "Mantém"
+  - from: "suco"
+    to: "sumo"
+  - from: "bife à parmegiana"
+    to: "bife à parmegiana"
+    note: "Mantém — prato BR com nome fixo"
+  - from: "churrasco"
+    to: "churrasco"
+    note: "Mantém em PT-PT também"
+  - from: "batata frita"
+    to: "batatas fritas"
+    note: "PT-PT tende a usar plural"
+
+# Exclamações e interjeições
+interjections:
+  - from: "nossa"
+    to: "caramba"
+    note: "Interjeição tipicamente BR"
+  - from: "ué"
+    to: ""
+    note: "Remover — não usado em PT-PT"
+  - from: "tá"
+    to: "está"
+    note: "Forma coloquial BR → PT-PT formal em legendas"
+
+# Regras de pontuação e acentos
+punctuation_and_accents:
+  - from: "pra"
+    to: "para"
+  - from: "pro"
+    to: "para o"
+  - from: "ne"
+    to: "não é"
+    note: "quando aparece sem acento"
+
+# Termos técnicos (preserve em inglês)
+preserve_as_is:
+  - "deploy"
+  - "build"
+  - "commit"
+  - "pull request"
+  - "pipeline"
+  - "endpoint"
+  - "token"
+  - "hook"
+  - "API"
+  - "SDK"
+  - "CLI"
+  - "SaaS"
+
+# Metadata
+notes:
+  - "Este dicionário é baseline. Primeiro mês de produção Alturense deve capturar novas palavras a adicionar."
+  - "Aplicar substituições com word boundaries (regex \\b) para evitar matches parciais."
+  - "Preservar capitalização original (ex: 'Você' → 'Tu', 'você' → 'tu')."
+  - "Se surgir ambiguidade de contexto (ex: 'legal' jurídico vs coloquial), default é NÃO substituir — marcar para revisão humana."
+  - "Fonte de expansão futura: https://ciberduvidas.iscte-iul.pt/ (repositório autoritativo PT-PT)"
