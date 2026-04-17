@@ -5,10 +5,10 @@ handoff:
   to_agent: pm
   to_persona: Morgan
   created: 2026-04-17
-  status: pending
-  consumed: false
-  consumed_at: null
-  consumed_by: null
+  status: consumed
+  consumed: true
+  consumed_at: 2026-04-17T00:00:00Z
+  consumed_by: pm (Morgan)
 
 summary: >
   Passo A do Bootstrap concluído pela Uma em 2026-04-17. Squad renomeado, red flag #2 corrigida,

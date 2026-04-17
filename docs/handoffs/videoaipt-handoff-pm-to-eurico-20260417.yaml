@@ -1,0 +1,87 @@
+handoff:
+  id: videoaipt-handoff-pm-to-eurico-20260417
+  from_agent: pm
+  from_persona: Morgan
+  to_agent: eurico (human)
+  to_persona: Eurico Alves
+  created: 2026-04-17
+  status: pending
+  consumed: false
+  consumed_at: null
+  consumed_by: null
+
+summary: >
+  PRD.md expandido de v0.1 (skeleton) para v0.9 (draft completo não-autoritativo) pelo @pm
+  (Morgan). Todas as secções [PENDENTE] da v0.1 foram preenchidas: personas detalhadas,
+  3 user journeys, modelo de monetização Fase 2, MVP scope v1.0/v1.1+/v1.5/v2.0, KPIs Fase
+  1+Fase 2, e risk register com 17 riscos priorizados. Decisões autónomas marcadas com
+  [Assumption — validar com Eurico]. PRD v0.9 está pronto para revisão interactiva com o
+  Eurico — 20 questões numeradas na secção 15 aguardam validação antes de promover para v1.0.
+
+context:
+  project: VIDEO-AI-PT
+  project_root: C:\Users\XPS\Documents\videoaipt
+  phase: Bootstrap — fim do Passo A, aguardar validação PRD para iniciar Passo B
+  language: PT-PT (nunca PT-BR)
+
+  what_was_done_in_this_session:
+    - PRD.md reescrito de v0.1 (136 linhas, skeleton) para v0.9 (draft completo, ~430 linhas)
+    - Secção 3 — Personas detalhadas (Fase 1 Eurico Operator + Fase 2 Mentor Comunidade) com goals/pains/workflow
+    - Secção 9 — 3 user journeys (A onboarding cliente, B produção dia-a-dia, C handoff agendador)
+    - Secção 10 — Monetização Fase 2 com 5 opções avaliadas + recomendação híbrida faseada
+    - Secção 11 — MVP scope v1.0/v1.1/v1.5/v2.0 alinhado com 4 camadas do stack
+    - Secção 12 — KPIs Fase 1 (7 métricas) + Fase 2 (4 blocos adopção/retenção/satisfação/churn/económicas)
+    - Secção 13 — Risk register com 17 riscos (técnicos/legais/produto) priorizados + mitigações
+    - Secção 15 — 20 questões numeradas para o Eurico validar antes de promover para v1.0
+
+  decisions_made_autonomously:
+    - "[Assumption] Agendador default assumido = Metricool (popular em PT, suporta Facebook/Instagram)"
+    - "[Assumption] Persona Fase 2 com tolerância técnica média (precisa UI mínima, aceita CLI)"
+    - "[Assumption] Modelo de monetização híbrido: mensalidade comunidade + pool base + créditos top-up"
+    - "[Assumption] v1.0 com 1 único provider camada 1 (fallback fica para v1.1)"
+    - "[Assumption] v1.0 só Facebook 1:1; outros formatos v1.1"
+    - "[Assumption] Música royalty-free obrigatória (mitigação R9)"
+    - "[Assumption] Custo alvo <€2 por vídeo"
+    - "[Assumption] KPI Fase 2: 10-20 mentorados v1.5, 50+ v2.0 (proporcional a tamanho estimado comunidade)"
+    - Todas estas assumptions estão marcadas no PRD.md e listadas como questões 1-20 na secção 15
+
+  artifacts_created:
+    - docs/handoffs/videoaipt-handoff-pm-to-eurico-20260417.yaml (este ficheiro)
+
+  artifacts_modified:
+    - PRD.md (v0.1 -> v0.9)
+    - docs/HANDOFF-INDEX.md (bootstrap-to-pm movido para Archived, pm-to-eurico adicionado a Pending)
+
+  artifacts_archived:
+    - docs/handoffs/videoaipt-handoff-bootstrap-to-pm-20260417.yaml -> docs/handoffs/archive/
+
+  red_flags_still_open:
+    - "#3: NANOBANANA_API_KEY vazio — decisão adiada para Passo B research (Risk R6 no PRD)"
+    - "#4: web-search-fallback em social-scraper.js — design decision documentada"
+
+next_action:
+  description: >
+    Eurico, lê PRD.md v0.9 completo, foco nas secções novas (3, 9, 10, 11, 12, 13). Depois
+    revê a secção 15 (20 questões numeradas) e responde. Assim que o PM tiver as respostas,
+    promove PRD.md para v1.0 e emite handoff para @analyst (Alex) iniciar Passo B (research
+    das 4 camadas de stack).
+  priority_questions_to_answer_first:
+    - Q1 (persona Fase 2 tolerância técnica — define scope UI v1.5)
+    - Q6 (autonomia pricing — viabiliza modelo monetização)
+    - Q8 (custo alvo por vídeo — determina escolha de camada 1)
+    - Q10 (Canva vs Gemini v1.0 — define camada 2 imediatamente)
+    - Q13 (tamanho real da comunidade — dimensiona KPIs Fase 2)
+  suggested_next_commands:
+    - "ler PRD.md completo, começar pela secção 15"
+    - "responder questões 1-20 (ou as prioritárias)"
+    - "@pm retomar para integrar respostas e promover para v1.0"
+    - "depois: @analyst *research para Passo B"
+
+blockers:
+  - Promoção para v1.0 bloqueada até o Eurico responder às questões da secção 15 do PRD
+
+references:
+  - PRD.md v0.9 (artefacto principal deste handoff)
+  - HANDOFF-BOOTSTRAP.md (contexto original)
+  - CLAUDE.md (mental model do projecto)
+  - C:\Users\XPS\.claude\rules\handoff-central.md (regra global Handoff Central)

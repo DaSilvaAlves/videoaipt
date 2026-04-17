@@ -10,13 +10,15 @@
 
 | ID | From → To | Summary | Created |
 |----|-----------|---------|---------|
-| videoaipt-handoff-bootstrap-to-pm-20260417 | ux-design-expert (Uma) → pm (Morgan) | Passo A concluído. `@pm` agora formaliza PRD.md v1.0 em sessão interactiva com o Eurico antes do Passo B (research de stack). | 2026-04-17 |
+| videoaipt-handoff-pm-to-eurico-20260417 | pm (Morgan) → eurico (human) | PRD.md expandido de v0.1 para v0.9. Aguarda validação do Eurico às 20 questões da secção 15 antes de promover para v1.0. Só depois: handoff para @analyst iniciar Passo B (research). | 2026-04-17 |
 
 ---
 
 ## Archived
 
-*(vazio — nenhum handoff consumido ainda)*
+| ID | From → To | Consumed At | Consumed By |
+|----|-----------|-------------|-------------|
+| videoaipt-handoff-bootstrap-to-pm-20260417 | ux-design-expert (Uma) → pm (Morgan) | 2026-04-17 | pm (Morgan) |
 
 ---
 
@@ -24,3 +26,4 @@
 
 - Handoff bootstrap **original** está na raíz como `HANDOFF-BOOTSTRAP.md` — fonte de verdade do arranque do projecto. Não é movido para `archive/` porque serve de referência permanente ao contexto de criação.
 - Todos os handoffs futuros entram aqui com prefixo `videoaipt-`.
+- Ficheiros consumidos ficam em `docs/handoffs/archive/`.
