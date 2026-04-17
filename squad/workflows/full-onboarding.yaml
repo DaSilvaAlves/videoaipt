@@ -1,0 +1,132 @@
+workflow:
+  id: full-onboarding
+  name: Full Onboarding - Social Media Squad
+  version: "1.0"
+  type: orchestration
+
+  description: >-
+    Onboarding completo do usuário — do zero à primeira peça de conteúdo.
+    Orquestra os 4 agentes em sequência: Scout (entrevista) → Lens (pesquisa) →
+    Muse (persona) → Ink (primeiro conteúdo).
+
+  project_types:
+    - content-generation
+    - social-media
+
+  metadata:
+    estimated_duration: "30-60 minutos"
+    complexity: medium
+    requires_user_interaction: true
+
+  # ════════════════════════════════════════════════════════════════════════
+  # INPUTS
+  # ════════════════════════════════════════════════════════════════════════
+  inputs:
+    required:
+      - user_name
+    optional:
+      - domain
+      - social_handles
+      - nanobanana_enabled
+
+  # ════════════════════════════════════════════════════════════════════════
+  # SEQUENCE
+  # ════════════════════════════════════════════════════════════════════════
+  sequence:
+
+    # --------------------- PHASE 1: Interview (Scout) ---------------------
+    - agent: profile-interviewer
+      creates: interview_session
+      action: start-interview
+      description: Inicia sessão de entrevista com o usuário
+
+    - agent: profile-interviewer
+      creates: interview_depth
+      action: follow-up-questions
+      description: Aprofunda entrevista adaptativamente (até depth_score >= 0.8)
+      loop:
+        condition: depth_score < 0.8
+        max_iterations: 8
+
+    - agent: profile-interviewer
+      creates: interview_data
+      action: save-profile-interview
+      description: Persiste entrevista finalizada
+
+    # --------------------- PHASE 2: Research (Lens) -----------------------
+    - agent: social-scout
+      creates: raw_profile_data
+      action: scan-social-profiles
+      description: Coleta dados públicos de perfis sociais
+      when: inputs.social_handles != null
+
+    - agent: social-scout
+      creates: engagement_patterns
+      action: analyze-engagement
+      description: Identifica padrões de engajamento e top posts
+      when: raw_profile_data
+
+    - agent: social-scout
+      creates: voice_profile
+      action: extract-voice-patterns
+      description: Extrai assinatura de voz e temas recorrentes
+      when: raw_profile_data
+
+    # --------------------- PHASE 3: Persona (Muse) ------------------------
+    - agent: persona-architect
+      creates: persona_yaml
+      action: build-copy-persona
+      description: Consolida dados em persona de copywriting executável
+
+    - agent: persona-architect
+      creates: persona_validation
+      action: validate-persona
+      description: Gate de qualidade via persona-quality-check.md
+      on_fail:
+        action: halt
+        message: "Persona não passou no quality gate"
+
+    - agent: persona-architect
+      creates: persona_brief_md
+      action: export-persona
+      description: Exporta persona em formato humano-legível
+
+    # --------------------- PHASE 4: First Content (Ink) -------------------
+    - agent: copy-creator
+      creates: first_post_brief
+      action: plan-post
+      description: Planeja primeira peça de conteúdo (apresentação)
+
+    - agent: copy-creator
+      creates: first_post_copy
+      action: generate-copy
+      description: Gera copy final da primeira peça
+
+    - agent: copy-creator
+      creates: first_post_image
+      action: generate-image
+      description: Gera imagem via Nanobanana (opcional)
+      when: inputs.nanobanana_enabled == true
+
+    - workflow_end: true
+
+  # ════════════════════════════════════════════════════════════════════════
+  # OUTPUT
+  # ════════════════════════════════════════════════════════════════════════
+  output:
+    artifacts:
+      - interview_data
+      - persona_yaml
+      - persona_brief_md
+      - first_post_copy
+      - first_post_image
+
+  # ════════════════════════════════════════════════════════════════════════
+  # COMPLETION
+  # ════════════════════════════════════════════════════════════════════════
+  completion:
+    message: "🎉 Onboarding completo! Persona construída e primeira peça gerada."
+    next_steps:
+      - "Revisar persona: cat data/personas/{user_id}-brief.md"
+      - "Publicar primeira peça no IG"
+      - "Rodar content-pipeline para gerar calendário mensal"

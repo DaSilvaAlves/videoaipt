@@ -1,0 +1,121 @@
+workflow:
+  id: content-pipeline
+  name: Content Pipeline - Batch Content Generation
+  version: "1.0"
+  type: orchestration
+
+  description: >-
+    Pipeline de produção de conteúdo em lote. Gera o calendário editorial e
+    itera gerando copy + imagem para cada peça planejada. Usa o agente Ink
+    (copy-creator) com suporte opcional a Nanobanana para imagens.
+
+  project_types:
+    - content-generation
+    - social-media
+
+  metadata:
+    estimated_duration: "variável (depende do tamanho do calendário)"
+    complexity: high
+    requires_user_interaction: periodic
+
+  # ════════════════════════════════════════════════════════════════════════
+  # INPUTS
+  # ════════════════════════════════════════════════════════════════════════
+  inputs:
+    required:
+      - persona_yaml
+      - period
+    optional:
+      - cadence
+      - platforms
+      - generate_images
+      - special_dates
+
+  # ════════════════════════════════════════════════════════════════════════
+  # SEQUENCE
+  # ════════════════════════════════════════════════════════════════════════
+  sequence:
+
+    # --------------------- STEP 1: Build Calendar -------------------------
+    - agent: copy-creator
+      creates: calendar_yaml
+      action: create-content-calendar
+      description: Gera calendário editorial distribuindo pilares da persona
+      human_gate:
+        message: "Calendário gerado. Revisar e aprovar antes de prosseguir?"
+        action: wait_for_approval
+
+    # --------------------- STEP 2: Per-piece generation -------------------
+    - agent: copy-creator
+      creates: piece_brief
+      action: plan-post
+      description: Planeja cada peça do calendário
+      foreach:
+        items: calendar_yaml.schedule
+        as: piece
+        parallel: 3
+
+    - agent: copy-creator
+      creates: piece_copy
+      action: generate-copy
+      description: Gera copy final para cada peça
+      foreach:
+        items: piece_brief
+        as: brief
+
+    - agent: copy-creator
+      creates: piece_image
+      action: generate-image
+      description: Gera imagem via Nanobanana (opcional, skip em erro)
+      when: inputs.generate_images == true
+      foreach:
+        items: piece_brief
+        as: brief
+      on_error:
+        action: skip_and_log
+        message: "Imagem falhou, peça segue sem visual"
+
+    # --------------------- STEP 3: Bundle ---------------------------------
+    - agent: copy-creator
+      creates: package_path
+      action: bundle-artifacts
+      description: Empacota todos os artefatos em data/packages/{period}/
+
+    - workflow_end: true
+
+  # ════════════════════════════════════════════════════════════════════════
+  # OUTPUT
+  # ════════════════════════════════════════════════════════════════════════
+  output:
+    artifacts:
+      - calendar_yaml
+      - piece_copy
+      - piece_image
+      - package_path
+    summary_metrics:
+      - total_pieces
+      - generated_copy
+      - generated_images
+      - skipped
+
+  # ════════════════════════════════════════════════════════════════════════
+  # EXIT CRITERIA
+  # ════════════════════════════════════════════════════════════════════════
+  exit_criteria:
+    success:
+      min_copy_generated_ratio: 0.9
+    partial:
+      min_copy_generated_ratio: 0.7
+      requires_user_acceptance: true
+    failure:
+      min_copy_generated_ratio_below: 0.7
+
+  # ════════════════════════════════════════════════════════════════════════
+  # COMPLETION
+  # ════════════════════════════════════════════════════════════════════════
+  completion:
+    message: "📦 Pipeline de conteúdo concluído. Pacote pronto em data/packages/"
+    next_steps:
+      - "Revisar package: ls data/packages/{period}/"
+      - "Ajustar copies que precisarem de refinamento manual"
+      - "Agendar publicação nas plataformas"

@@ -1,0 +1,77 @@
+handoff:
+  id: videoaipt-handoff-bootstrap-to-pm-20260417
+  from_agent: ux-design-expert
+  from_persona: Uma
+  to_agent: pm
+  to_persona: Morgan
+  created: 2026-04-17
+  status: pending
+  consumed: false
+  consumed_at: null
+  consumed_by: null
+
+summary: >
+  Passo A do Bootstrap concluído pela Uma em 2026-04-17. Squad renomeado, red flag #2 corrigida,
+  docs/ estrutura criada, PRD.md skeleton v0.1 escrito, package.json + git init + primeiro commit
+  feitos. Próximo passo: @pm (Morgan) formaliza PRD.md v1.0 em sessão interactiva com o Eurico
+  antes do Passo B (research de stack pelas 4 camadas).
+
+context:
+  project: VIDEO-AI-PT
+  project_root: C:\Users\XPS\Documents\videoaipt
+  phase: Bootstrap — fim do Passo A
+  language: PT-PT (nunca PT-BR)
+
+  what_was_done_in_this_session:
+    - Renomeado squad/squad.yaml (name: video-ai-pt-squad, slashPrefix: videoaipt, author: eurico-alves, original_author: adavio-tittoni, version: 0.1.0)
+    - Corrigido path duplicado data/data/ em squad/tasks/resolve-person.md (output exemplo agora é squad/data/adavio/...)
+    - Criada estrutura docs/ (architecture/, research/, handoffs/, handoffs/archive/)
+    - Criado PRD.md v0.1 skeleton (secções 1-10 prontas, secção 11 lista pendentes para @pm)
+    - Criado docs/HANDOFF-INDEX.md com entrada pending deste handoff
+    - Inicializado package.json via npm init -y + deps (axios, yaml, js-yaml)
+    - Inicializado repo git + primeiro commit com fundação
+
+  what_is_still_pending_for_pm:
+    - Secção 3 do PRD (personas detalhadas Fase 1 e Fase 2) — colaborar com @ux-design-expert
+    - Secção 11 do PRD (todas marcadas [PENDENTE]): personas, user journeys, monetização Fase 2, MVP scope, KPIs Fase 2, risk register
+    - Validar interactivamente com o Eurico antes de promover PRD.md de v0.1 para v1.0
+    - Só depois de PRD v1.0 validado, emitir handoff para @analyst (Alex) iniciar Passo B (research de stack)
+
+  artifacts_created:
+    - PRD.md
+    - CLAUDE.md
+    - docs/HANDOFF-INDEX.md
+    - docs/architecture/.gitkeep
+    - docs/research/.gitkeep
+    - docs/handoffs/archive/.gitkeep
+    - package.json
+    - package-lock.json
+    - .git/ (repo inicializado)
+
+  artifacts_modified:
+    - squad/squad.yaml (rename + version bump)
+    - squad/tasks/resolve-person.md (fix path duplication)
+
+  red_flags_still_open:
+    - "#3: NANOBANANA_API_KEY vazio e nanobanana-client.js lança API_KEY_MISSING sem fallback (squad/scripts/nanobanana-client.js:78-84). Decisão pendente: obter chave, implementar fallback Gemini, ou substituir por Gemini/OpenRouter directo. Decidir durante Passo B research."
+    - "#4: web-search-fallback em social-scraper.js retorna array vazio — design decision do Adavio (assume Apify sempre). Documentar ou implementar fallback se crítico."
+
+next_action:
+  description: >
+    @pm (Morgan), ler HANDOFF-BOOTSTRAP.md secção 2 e PRD.md v0.1. Iniciar sessão interactiva com
+    o Eurico para preencher secções marcadas [PENDENTE] no PRD.md (secção 11). Prioridade:
+    personas detalhadas + user journeys + MVP scope v1.0. Só depois emitir handoff para @analyst
+    iniciar Passo B (research das 4 camadas: vídeo IA, imagem, edição programática, legendagem).
+  suggested_first_commands:
+    - "@pm *help"
+    - "ler HANDOFF-BOOTSTRAP.md secção 2"
+    - "ler PRD.md v0.1 completo"
+    - "elicitar preferências do Eurico sobre personas Fase 1/Fase 2"
+
+blockers: []
+
+references:
+  - HANDOFF-BOOTSTRAP.md (contexto completo do bootstrap)
+  - CLAUDE.md (mental model do projecto)
+  - PRD.md v0.1 (skeleton a refinar)
+  - C:\Users\XPS\.claude\rules\handoff-central.md (regra global Handoff Central)

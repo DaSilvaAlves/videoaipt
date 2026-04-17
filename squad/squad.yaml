@@ -1,0 +1,116 @@
+name: video-ai-pt-squad
+version: 0.1.0
+description: >
+  Squad task-first para produção automatizada de vídeos curtos de redes sociais.
+  Do brief do cliente (marca ou pessoa) ao vídeo finalizado + package agendável,
+  com o mínimo de toque humano. Adaptado do squad social-media-squad original
+  de Adavio Tittoni (MIT).
+author: eurico-alves
+original_author: adavio-tittoni
+license: MIT
+slashPrefix: videoaipt
+
+aiox:
+  minVersion: "2.1.0"
+  type: squad
+
+# --------------------------------------------------------------------------
+# COMPONENTS — Task-first architecture
+# --------------------------------------------------------------------------
+components:
+
+  agents:
+    - profile-interviewer.md
+    - social-scout.md
+    - persona-architect.md
+    - copy-creator.md
+    - script-writer.md
+
+  tasks:
+    # shared helpers
+    - resolve-person.md
+    # profile-interviewer
+    - start-interview.md
+    - follow-up-questions.md
+    - save-profile-interview.md
+    # social-scout
+    - scan-social-profiles.md
+    - analyze-engagement.md
+    - extract-voice-patterns.md
+    # persona-architect
+    - build-copy-persona.md
+    - refine-voice-tone.md
+    - export-persona.md
+    # copy-creator
+    - plan-post.md
+    - plan-story.md
+    - create-content-calendar.md
+    - generate-copy.md
+    - generate-image.md
+    # script-writer
+    - plan-reel.md
+    - plan-yt-short.md
+    - plan-yt-video.md
+    - plan-yt-aulao.md
+    - script-from-post.md
+    - generate-storyboard.md
+
+  workflows:
+    - full-onboarding.yaml
+    - content-pipeline.yaml
+
+  templates:
+    - persona-brief.md
+    - post-brief.md
+    - video-script-tmpl.md
+
+  checklists:
+    - persona-quality-check.md
+
+  scripts:
+    - nanobanana-client.js
+    - social-scraper.js
+
+  tools: []
+
+# --------------------------------------------------------------------------
+# CONFIG — Inherits from AIOX core (extend mode)
+# --------------------------------------------------------------------------
+config:
+  extends: extend
+  coding-standards: config/coding-standards.md
+  tech-stack: config/tech-stack.md
+  source-tree: config/source-tree.md
+
+# --------------------------------------------------------------------------
+# DEPENDENCIES
+# --------------------------------------------------------------------------
+dependencies:
+  node:
+    - axios      # Para calls de API (Nanobanana)
+    - yaml       # Parse de configs
+  python: []
+  squads: []
+
+# --------------------------------------------------------------------------
+# ENVIRONMENT VARIABLES (required for full functionality)
+# --------------------------------------------------------------------------
+env:
+  required:
+    - NANOBANANA_API_KEY   # Para geração de imagens
+  optional:
+    - APIFY_API_TOKEN       # Para scraping avançado de perfis
+
+# --------------------------------------------------------------------------
+# TAGS
+# --------------------------------------------------------------------------
+tags:
+  - social-media
+  - copywriting
+  - content-generation
+  - persona
+  - marketing
+  - automation
+  - instagram
+  - tiktok
+  - linkedin

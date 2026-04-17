@@ -1,0 +1,27 @@
+{
+  "name": "video-ai-pt",
+  "version": "0.1.0",
+  "description": "Sistema task-first para produção automatizada de vídeos curtos de redes sociais. Do brief do cliente ao vídeo finalizado + package agendável, com o mínimo de toque humano.",
+  "private": true,
+  "license": "MIT",
+  "author": "Eurico Alves <euricojsalves@gmail.com>",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "test": "echo \"No tests yet — scaffold pendente do Passo C\" && exit 0",
+    "lint": "echo \"Lint não configurado — scaffold pendente\" && exit 0"
+  },
+  "dependencies": {
+    "axios": "^1.7.0",
+    "js-yaml": "^4.1.0",
+    "yaml": "^2.5.0"
+  },
+  "keywords": [
+    "video-generation",
+    "ai",
+    "social-media",
+    "task-first",
+    "pt-pt"
+  ]
+}
