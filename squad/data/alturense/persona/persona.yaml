@@ -1,0 +1,64 @@
+# persona.yaml — Snack Bar Clube Recreativo Alturense
+#
+# Cliente brand-mode (B2C / restauração). Caso de teste #1 do MVP v1.0 do VIDEO-AI-PT.
+# Fonte: PRD.md v1.0 §14 (caso Alturense) + §8.3 Q-ARQ-3 (bloco providers).
+#
+# Esta persona é actualizada por Story 1.1 com os blocos `providers:` e
+# `visual_generation:` requeridos pela arquitectura Q-ARQ-3.
+
+persona_id: "alturense"
+slug: "alturense"
+name: "Snack Bar Clube Recreativo Alturense"
+brand: true                           # cliente brand-mode (B2C), não pessoa individual
+sector: "restauracao"
+location: "Altura, Algarve, Portugal"
+language: "pt-PT"
+
+# Bloco providers — selecção runtime de implementações dos contratos Q-ARQ-3.
+# v1.0: 1 implementação completa (remotion-local) + 4 stubs documentados.
+providers:
+  video: "kling-v2-fal"               # Camada 1 — VideoProvider (stub v1.0)
+  image: "gemini-2.5-flash-image"     # Camada 2 — ImageProvider (stub v1.0)
+  editing: "remotion-local"           # Camada 3 — EditingProvider (IMPLEMENTADO Story 1.1)
+  caption: "text-from-script"         # Camada 4 — CaptionProvider (stub v1.0, sem Whisper Q-ARQ-2)
+  storage: "local-folder"             # Fundação — StorageProvider (stub v1.0)
+
+# Bloco visual_generation — flags específicas de Camada 2.
+visual_generation:
+  canva_editable: false               # Alturense NÃO usa Canva MCP — Gemini default
+
+# Bloco brand — pilares editoriais e identidade visual.
+brand_pillars:
+  - "prato_do_dia"                    # destaque diário do menu
+  - "bastidor"                        # cozinha, equipa, preparação
+  - "sazonalidade"                    # ingredientes da época
+  - "comunidade"                      # clientes habituais, jogos do clube
+
+# Paleta de cores Alturense — tons quentes "Atum à Algarvia".
+# Fonte: PRD.md v1.0 §14 + adaptação pelo @sm na Story 1.1 Dev Notes.
+palette:
+  primary: "#6B3A2A"                  # café (texto principal, fundos)
+  secondary: "#D4A017"                # dourado (destaques, preços, badges)
+  accent: "#5C6B2A"                   # verde-oliva (accents secundários)
+
+# Bloco voice — para script-writer e copy-creator (preenchido em stories futuras).
+voice:
+  tone: ["caseiro", "directo", "regional-algarvio"]
+  language_strict: "pt-PT"            # NUNCA pt-BR
+  forbidden_terms:
+    - "delicioso"
+    - "imperdível"
+    - "promoção exclusiva"
+
+# Formato default — Camada 3.
+default_format:
+  aspect_ratio: "1:1"
+  duration_s_min: 20
+  duration_s_max: 30
+  fps: 30
+  platform_hint: "facebook"
+
+# Metadata.
+created_at: "2026-04-18"
+created_by: "@dev (Dex) na Story 1.1"
+last_updated: "2026-04-18"
