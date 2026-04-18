@@ -28,8 +28,16 @@
  */
 
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
+import { AbsoluteFill, staticFile, useCurrentFrame, useVideoConfig } from 'remotion';
 import { loadFont } from '@remotion/google-fonts/Montserrat';
+
+/**
+ * Resolve um path relativo via staticFile() ou retorna a URL absoluta como está.
+ */
+function resolverSrc(src: string): string {
+  if (src.startsWith('http://') || src.startsWith('https://')) return src;
+  return staticFile(src);
+}
 
 const { fontFamily } = loadFont();
 
@@ -98,7 +106,7 @@ export const BurnedSubtitle: React.FC<BurnedSubtitleProps> = ({ srtPath }) => {
 
   React.useEffect(() => {
     let cancelado = false;
-    fetch(srtPath)
+    fetch(resolverSrc(srtPath))
       .then((r) => r.text())
       .then((texto) => {
         if (!cancelado) setSegmentos(parseSrt(texto));

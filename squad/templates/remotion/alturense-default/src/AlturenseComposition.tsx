@@ -31,11 +31,11 @@ import { AbsoluteFill, Audio, useVideoConfig } from 'remotion';
 import { TransitionSeries, linearTiming } from '@remotion/transitions';
 import { fade } from '@remotion/transitions/fade';
 
-import { Clip1Scene } from '@/scenes/Clip1Scene';
-import { Clip2Scene } from '@/scenes/Clip2Scene';
-import { FinalScene } from '@/scenes/FinalScene';
-import { MusicLayer } from '@/audio/MusicLayer';
-import { BurnedSubtitle } from '@/subtitles/BurnedSubtitle';
+import { Clip1Scene } from './scenes/Clip1Scene';
+import { Clip2Scene } from './scenes/Clip2Scene';
+import { FinalScene } from './scenes/FinalScene';
+import { MusicLayer } from './audio/MusicLayer';
+import { BurnedSubtitle } from './subtitles/BurnedSubtitle';
 
 /**
  * Props aceites pela Composition Alturense.

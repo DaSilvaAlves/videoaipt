@@ -15,7 +15,7 @@
  */
 
 import { Composition, registerRoot } from 'remotion';
-import { AlturenseComposition, AlturenseCompositionProps } from '@/AlturenseComposition';
+import { AlturenseComposition, AlturenseCompositionProps } from './AlturenseComposition';
 
 // Constantes da Composition Alturense.
 // Duração: 28s = 10s clip1 + 0,5s fade + 10s clip2 + 0,5s fade + 7s final = 28s

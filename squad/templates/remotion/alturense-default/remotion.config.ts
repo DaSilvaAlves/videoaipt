@@ -6,6 +6,15 @@
  * `durationInFrames` da Composition (não aqui).
  *
  * Story 1.1 — AC-B1.
+ *
+ * NOTA SOBRE AC-B8 (absolute imports):
+ * Tentou-se configurar paths absolutos `@/...` via Webpack alias e via
+ * NormalModuleReplacementPlugin, mas o Webpack interno do Remotion 4.0.180
+ * sofre colisão com scoped packages (`@remotion/...`). Decisão de @dev:
+ * usar imports relativos curtos (apenas 1 nível) entre componentes do
+ * template. tsconfig.json mantém os paths declarados para IntelliSense
+ * em IDEs. A intenção de AC-B8 (evitar `../../../`) é honrada — todos os
+ * imports relativos são `./` ou `../` de 1 nível só.
  */
 
 import { Config } from '@remotion/cli/config';

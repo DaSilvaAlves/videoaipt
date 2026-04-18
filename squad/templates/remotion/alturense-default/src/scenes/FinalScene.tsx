@@ -17,16 +17,24 @@
  */
 
 import React from 'react';
-import { AbsoluteFill, Img } from 'remotion';
+import { AbsoluteFill, Img, staticFile } from 'remotion';
 
-import { PriceBadge } from '@/overlays/PriceBadge';
-import { TextOverlay } from '@/overlays/TextOverlay';
+import { PriceBadge } from '../overlays/PriceBadge';
+import { TextOverlay } from '../overlays/TextOverlay';
 
 interface FinalSceneProps {
   designUrl: string;
   price: string;
   dishName: string;
   brandColor: string;
+}
+
+/**
+ * Resolve um path relativo via staticFile() ou retorna a URL absoluta como está.
+ */
+function resolverSrc(src: string): string {
+  if (src.startsWith('http://') || src.startsWith('https://')) return src;
+  return staticFile(src);
 }
 
 export const FinalScene: React.FC<FinalSceneProps> = ({
@@ -38,7 +46,7 @@ export const FinalScene: React.FC<FinalSceneProps> = ({
   return (
     <AbsoluteFill>
       <Img
-        src={designUrl}
+        src={resolverSrc(designUrl)}
         style={{
           width: '100%',
           height: '100%',

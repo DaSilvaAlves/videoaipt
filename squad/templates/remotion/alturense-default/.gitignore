@@ -1,0 +1,22 @@
+# Template-level gitignore — Alturense Remotion
+#
+# Ficheiros binários grandes (audio/video) NÃO são versionados:
+# - public/music/*.mp3 são tracks royalty-free descarregadas pelo operador
+#   (ver public/music/README.md). Licença documentada em assets/LICENCE-AUDIO.md.
+# - public/placeholder/*.mp4 são placeholders gerados por
+#   squad/providers/implementations/remotion-local/generate-test-assets.js
+#   (regeneráveis a qualquer momento; sem valor em versionar).
+# - PNG placeholders são pequenos e podem ser comitados (referência visual).
+
+node_modules/
+out/
+*.mp3
+*.mp4
+*.wav
+*.aac
+*.m4a
+*.mov
+
+# Permitir explicitamente PNG placeholders para servir de referência visual
+# (cada PNG ~70-170KB; aceitável versionar).
+!public/placeholder/*.png

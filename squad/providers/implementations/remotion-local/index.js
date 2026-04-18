@@ -72,20 +72,22 @@ function persistirCompositionSpec(renderDir, compositionSpec) {
 /**
  * Constrói os argumentos para `npx remotion render`.
  *
- * Importante: Remotion espera os props como string JSON — escapamos via
- * JSON.stringify do composition_spec inteiro (não dos campos individuais).
+ * Importante: em vez de passar os props como string JSON via --props (que sofre
+ * problemas de escaping no Windows), escrevemos os props num ficheiro temporário
+ * e passamos o path. Esta abordagem é recomendada pelo próprio Remotion quando
+ * detecta JSON inválido em --props (ver mensagem de erro em runtime).
  *
- * @param {object} args — { entryPoint, compositionId, outputPath, propsJson }
+ * @param {object} args — { entryPoint, compositionId, outputPath, propsPath }
  * @returns {string[]}
  */
-function construirArgsRender({ entryPoint, compositionId, outputPath, propsJson }) {
+function construirArgsRender({ entryPoint, compositionId, outputPath, propsPath }) {
   return [
     'remotion',
     'render',
     entryPoint,
     compositionId,
     outputPath,
-    '--props', propsJson,
+    `--props=${propsPath}`,
     '--codec', 'h264',
     '--log', 'verbose',
   ];
@@ -201,7 +203,11 @@ async function render({ composition_spec, assets, output_spec }) {
   delete remotionProps.composition_id;
   delete remotionProps.template_id;
 
-  const propsJson = JSON.stringify(remotionProps);
+  // Escrever props num ficheiro JSON temporário ao lado dos logs. Evita
+  // problemas de shell escaping no Windows (especialmente com caracteres como
+  // €, í, à, etc., que aparecem em PT-PT).
+  const propsPath = path.join(renderDir, 'props.json');
+  fs.writeFileSync(propsPath, JSON.stringify(remotionProps, null, 2), 'utf8');
 
   // Entry point relativo ao templateDir.
   const entryPoint = path.posix.join('src', 'index.tsx');
@@ -210,7 +216,7 @@ async function render({ composition_spec, assets, output_spec }) {
     entryPoint,
     compositionId,
     outputPath,
-    propsJson,
+    propsPath,
   });
 
   // Executar render e medir latência.

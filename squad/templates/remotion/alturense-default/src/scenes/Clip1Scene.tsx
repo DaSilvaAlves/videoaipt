@@ -17,14 +17,24 @@
  */
 
 import React from 'react';
-import { AbsoluteFill, OffthreadVideo } from 'remotion';
+import { AbsoluteFill, OffthreadVideo, staticFile } from 'remotion';
 
-import { TextOverlay } from '@/overlays/TextOverlay';
+import { TextOverlay } from '../overlays/TextOverlay';
 
 interface Clip1SceneProps {
   videoUrl: string;
   dishName: string;
   brandColor: string;
+}
+
+/**
+ * Resolve um path relativo via staticFile() ou retorna a URL absoluta como está.
+ * Permite o template aceitar tanto URLs http(s) reais (produção) como paths
+ * relativos a public/ (testes locais).
+ */
+function resolverSrc(src: string): string {
+  if (src.startsWith('http://') || src.startsWith('https://')) return src;
+  return staticFile(src);
 }
 
 export const Clip1Scene: React.FC<Clip1SceneProps> = ({
@@ -39,7 +49,7 @@ export const Clip1Scene: React.FC<Clip1SceneProps> = ({
         worker thread separado, evitando bloqueios do UI thread.
       */}
       <OffthreadVideo
-        src={videoUrl}
+        src={resolverSrc(videoUrl)}
         muted   // o áudio do clip é desactivado; usamos só MusicLayer
         style={{
           width: '100%',

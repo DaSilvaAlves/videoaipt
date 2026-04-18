@@ -15,17 +15,25 @@
  */
 
 import React from 'react';
-import { AbsoluteFill, OffthreadVideo } from 'remotion';
+import { AbsoluteFill, OffthreadVideo, staticFile } from 'remotion';
 
 interface Clip2SceneProps {
   videoUrl: string;
+}
+
+/**
+ * Resolve um path relativo via staticFile() ou retorna a URL absoluta como está.
+ */
+function resolverSrc(src: string): string {
+  if (src.startsWith('http://') || src.startsWith('https://')) return src;
+  return staticFile(src);
 }
 
 export const Clip2Scene: React.FC<Clip2SceneProps> = ({ videoUrl }) => {
   return (
     <AbsoluteFill>
       <OffthreadVideo
-        src={videoUrl}
+        src={resolverSrc(videoUrl)}
         muted   // áudio do clip silenciado — música vem de MusicLayer
         style={{
           width: '100%',
