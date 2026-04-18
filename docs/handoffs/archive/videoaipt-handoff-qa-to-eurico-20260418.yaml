@@ -1,0 +1,164 @@
+handoff:
+  id: videoaipt-handoff-qa-to-eurico-20260418
+  from_agent: qa
+  from_persona: Quinn
+  to_agent: eurico
+  to_persona: human (Eurico Operator)
+  created: 2026-04-18
+  status: consumed
+  consumed: true
+  consumed_at: "2026-04-18T21:00:00Z"
+  consumed_by: eurico (human) — delivered altura11.mp4 + frango-assado-19-04.png + price €7,50; then @qa processed input and produced gate FAIL
+
+summary: >
+  Quinn (@qa) executou gate da Story 1.1 "Remotion Alturense template".
+  Veredicto global: BLOCKED em AC-C2 (comparação lado-a-lado vs CapCut).
+  Código, providers, composition, cenas, overlays, stub-safe subtitles, PT-PT
+  e render local — todos PASS. AC-B5 (música) e AC-B8 (imports) em CONCERNS
+  aceitáveis. 4 decisões técnicas DEC-1..DEC-4 revistas: 3 APPROVE, 1 CONCERNS
+  (DEC-3 música). Para destravar o gate, Eurico precisa fornecer 1 vídeo
+  CapCut real do Alturense como baseline de comparação. Documento completo
+  em docs/qa/1.1-remotion-vs-capcut.md.
+
+priority: HIGH
+
+context:
+  project: VIDEO-AI-PT
+  story_id: "1.1"
+  story_title: "Remotion Alturense template — 1ª peça funcional"
+  story_path: "docs/stories/active/1.1.story.md"
+  story_status: InReview (inalterado — aguarda AC-C2)
+  qa_gate_doc: "docs/qa/1.1-remotion-vs-capcut.md"
+  language: PT-PT
+
+gate_verdict:
+  global: BLOCKED
+  reason: "AC-C2 exige vídeo CapCut baseline real; artefacto não existe no filesystem"
+  parcial_pass:
+    - AC-A1 (interfaces criadas)
+    - AC-A2 (EditingProvider remotion-local completo)
+    - AC-A3 (4 stubs documentados)
+    - AC-A4 (persona.yaml com bloco providers)
+    - AC-B1 (estrutura de ficheiros)
+    - AC-B2 (composition 1080×1080 30fps + TransitionSeries)
+    - AC-B3 (overlays configuráveis via props)
+    - AC-B4 (BurnedSubtitle stub-safe Q-ARQ-2)
+    - AC-B6 (render via EditingProvider, NÃO chamada directa)
+    - AC-B7 (documentação inline suficiente, PT-PT)
+    - AC-C1 (render local PASS via ffprobe — 1080×1080 H.264 30fps 28,05s)
+    - AC-C3 (PT-PT textos visíveis: "Atum à Algarvia", "€12,50")
+  parcial_concerns:
+    - AC-B5 (música): track real placeholder silent; LICENCE-AUDIO.md com campos por preencher — obrigação pré-produção
+    - AC-B8 (absolute imports): relativos de 1 nível por colisão `@/` vs `@remotion/cli` — follow-up @architect
+  parcial_fail: []
+  blocked:
+    - AC-C2 (comparação CapCut) — sem vídeo baseline do cliente
+
+revisao_decisoes_dec:
+  DEC-1:
+    item: "Imports relativos curtos em vez de @/ alias"
+    verdict: APPROVE
+    justificacao: >
+      Tsconfig paths declarados para autocompletar IDE. Restrição externa
+      imposta por scoped package `@remotion/cli`. Três tentativas de resolução
+      documentadas no Debug Log (alias config, trailing slash, NormalModuleReplacementPlugin).
+      AC-B8 honored em espírito.
+    followup: "@architect avalia alias alternativo (`$/`, `~/`) fora do scope desta story"
+  DEC-2:
+    item: "persona.yaml force-added ao git"
+    verdict: APPROVE
+    justificacao: >
+      Padrão legítimo para config estrutural dentro de pasta runtime gitignored.
+      persona.yaml não é output runtime — é configuração necessária para render.
+    followup: "@data-engineer refina .gitignore para ignorar apenas squad/data/*/{videos,posts,stories,calendar} e deixar persona/ versionado sem -f"
+  DEC-3:
+    item: "Track música como placeholder silent + LICENCE-AUDIO.md com campos pendentes"
+    verdict: CONCERNS
+    justificacao: >
+      Decisão correcta para evitar commit de binário sem licença confirmada.
+      AC-B5 em estado PARTIAL reconhecido. R9 (direitos de música) não é violado
+      no estado actual.
+    followup: >
+      Eurico descarrega Uppbeat free tier (ou Artlist/Epidemic) + preenche
+      LICENCE-AUDIO.md ANTES da primeira produção real. Sem isto, gate AC-B5
+      bloqueia a primeira produção (não o Done da story técnica).
+  DEC-4:
+    item: "Variáveis técnicas em inglês (fps, durationInFrames, URL, Props)"
+    verdict: APPROVE
+    justificacao: >
+      Compromisso sensato com convenções Remotion e TypeScript React.
+      AC-C3 refere-se a textos VISÍVEIS — cumprido integralmente.
+      Vars de lógica de negócio em PT-PT: escala, opacidade, paleta, corDeFundo,
+      resolverSrc, atrasoFrames, DURACAO_CLIP1_S, TRANSICAO_FRAMES.
+    followup: "Opcional: documentar convenção em CLAUDE.md ou guia de estilo"
+
+what_eurico_needs_to_provide:
+  artefacto_principal:
+    tipo: "Vídeo Alturense produzido manualmente via CapCut"
+    qtd_minima: 1
+    formato: ".mp4 H.264"
+    aspecto: "1:1 preferencial (1080×1080); outros ratios aceites se Eurico só tiver 9:16/16:9"
+    duracao: "20-30s ideal; aceitável 15-45s"
+    conteudo: "Prato do dia real (ex: Atum à Algarvia) com os overlays típicos do workflow CapCut (nome do prato, preço, música)"
+    path_sugerido: "docs/qa/samples/capcut-alturense-{YYYY-MM-DD}.mp4"
+    observacoes: >
+      Se Eurico tiver múltiplos vídeos recentes, escolher 1 representativo do
+      workflow padrão (prato do dia é o mais alinhado com o template Remotion).
+      Se possível, enviar também os assets originais (clip1.mp4, design-final.png)
+      usados nesse vídeo CapCut para @qa poder fazer render Remotion com
+      exactamente os mesmos inputs.
+  artefactos_opcionais:
+    - ".srt ou transcrição do áudio/legendas (ajuda a validar AC-B4 no render Remotion equivalente)"
+    - "Lista dos pratos/preços usados (para match exacto na persona.yaml de teste)"
+    - "Track de música real (Uppbeat / Artlist / Epidemic Sound) + preenchimento dos campos pendentes de LICENCE-AUDIO.md (destrava DEC-3 CONCERNS)"
+
+entregas_do_lado_qa:
+  - "docs/qa/1.1-remotion-vs-capcut.md — gate parcial completo com BLOCKED formalizado"
+  - "Secção QA Results da Story 1.1 actualizada (única secção que @qa pode editar)"
+  - "Revisão técnica das 4 DEC-1..DEC-4 com verdict + evidence + recommendation"
+  - "Este handoff qa-to-eurico documentado em Handoff Central"
+  - "Handoff dev-to-qa consumido e arquivado"
+
+next_action: >
+  Eurico:
+  1. Enviar vídeo CapCut para docs/qa/samples/capcut-alturense-{data}.mp4
+     (pode ser via path absoluto — @qa copia para o destino correcto).
+  2. Opcional mas recomendado: descarregar track de música real e preencher
+     docs/../LICENCE-AUDIO.md para destravar DEC-3.
+  3. Responder ao Quinn "vídeo disponível em {path}" para reactivar o gate.
+
+  Quando vídeo disponível, @qa Quinn:
+  1. Copia vídeo para docs/qa/samples/ se necessário.
+  2. Edita persona.yaml de teste com copy/prato/preço do vídeo CapCut.
+  3. Executa `node squad/providers/implementations/remotion-local/test-render.js`
+     para produzir equivalente Remotion.
+  4. Side-by-side dos 2 vídeos em VLC / DaVinci / CapCut viewer.
+  5. Avalia 6 critérios AC-C2: pacing, overlays, música, legendas, cores, tom.
+  6. Documenta em docs/qa/1.1-remotion-vs-capcut.md secção "Comparação lado-a-lado"
+     com frames comparativos e veredicto por critério.
+  7. Emite veredicto final PASS ou FAIL.
+  8. Se PASS: cria handoff qa-to-devops para push dos 3 commits atómicos.
+  9. Se FAIL: cria handoff qa-to-dev com fixes específicos; QA Loop max 5 iterações.
+
+estimated_effort_qa_after_input:
+  "30-60 min (render Remotion equivalente + 6 critérios + documentação)"
+
+references:
+  - "docs/stories/active/1.1.story.md (Status: InReview — inalterado)"
+  - "docs/qa/1.1-remotion-vs-capcut.md (gate parcial completo)"
+  - "docs/handoffs/archive/videoaipt-handoff-dev-to-qa-20260418.yaml (consumido)"
+  - "Commits intocados: 97f38b3, 309f577, 0105b55"
+  - "PRD v1.0 §13.5 (R4 mitigation), §14 (caso Alturense), §8.3 (Q-ARQ-3)"
+
+known_constraints:
+  - "@devops NÃO faz push até AC-C2 fechar PASS — push é marco de Done, Done exige gate completo"
+  - "Se Eurico não conseguir fornecer vídeo CapCut em <7 dias, regra handoff-central.md diz 'stale > 7 dias = revisão humana'"
+  - "Fallback Shotstack v1.1 (R4 contingência) NÃO activa automaticamente — só após 3 reprovações do gate, o que requer pelo menos 1 baseline para comparar"
+  - "Nenhum fix pendente no código do @dev — se AC-C2 acabar PASS, story fecha sem iterações @qa<->@dev"
+
+cleanup_note: >
+  Quinn (@qa) executou gate completo dentro dos limites — não modificou código,
+  não fez commits, não tocou em secções da story fora de QA Results.
+  Documento primary de gate em docs/qa/ contém toda a análise técnica.
+  Este handoff é o meio oficial de comunicar a Eurico que precisa de fornecer
+  input para destravar o gate.

@@ -1,0 +1,124 @@
+handoff:
+  id: videoaipt-handoff-po-to-dev-20260418
+  from_agent: po
+  from_persona: Pax
+  to_agent: dev
+  to_persona: Dex
+  created: 2026-04-18
+  status: consumed
+  consumed: true
+  consumed_at: 2026-04-18
+  consumed_by: dev
+  result: implementation_complete (Tarefas 1-7 PASS, Tarefa 8 gate @qa pendente)
+
+summary: >
+  Pax (@po) validou Story 1.1 "Remotion Alturense template — 1ª peça funcional" com
+  10-point checklist. Veredicto GO (10/10 PASS). Trace-back exaustivo a PRD v1.0
+  §8.3, scaffold do @analyst e CLAUDE.md confirmou zero invenções (Article IV).
+  Story status Draft → Ready. Dex (@dev) pode começar implementação imediata.
+  Esforço estimado herdado do @pm: 2-3 dias incluindo learning curve Remotion.
+
+context:
+  project: VIDEO-AI-PT
+  story_id: "1.1"
+  story_title: "Remotion Alturense template — 1ª peça funcional"
+  story_path: "docs/stories/active/1.1.story.md"
+  story_status: Ready
+  epic: "Epic 1 — Camada 3 Remotion + Abstraction Layer"
+  prd_version: v1.0
+  language: PT-PT
+  risk_mitigation: "R4 (ALTA/ALTA), R20 (MÉDIA/ALTA), R9 (ALTA)"
+
+validation_result:
+  score: "10/10 PASS"
+  verdict: GO
+  validator: "Pax (@po)"
+  validated_at: 2026-04-18
+  checklist:
+    template_completeness: PASS
+    file_structure_clarity: PASS
+    ui_frontend_completeness: PASS
+    ac_satisfaction: PASS
+    validation_testing_instructions: PASS
+    security_considerations: PASS
+    tasks_subtasks_sequence: PASS
+    anti_hallucination: PASS
+    dependencies_sequencing: PASS
+    project_structure_coherence: PASS
+
+ac_groups_summary:
+  A_providers_q_arq_3:
+    count: 4
+    scope: "Contratos Provider documentados + EditingProvider implementado + 4 stubs + persona.yaml"
+    priority: HIGH
+    rationale: "Fundação Q-ARQ-3 da arquitectura v1.0 — preserva princípio Fase 2 multi-tenant"
+  B_template_remotion:
+    count: 8
+    scope: "Template completo Remotion 1080×1080 30fps, overlays, música royalty-free, render via EditingProvider"
+    priority: HIGH
+    rationale: "Camada 3 crítica do MVP — mitigação R4 e R20"
+  C_validacao:
+    count: 3
+    scope: "Render local + comparação CapCut (gate @qa) + PT-PT"
+    priority: CRITICAL
+    rationale: "AC-C2 é o gate do cliente Eurico — define se Remotion fica como Camada 3 v1.0 ou se accionamos fallback Shotstack"
+
+attention_points_for_dev:
+  - point: "Article IV (No Invention)"
+    detail: "Cada AC tem fonte rastreada em PRD/scaffold/CLAUDE.md. NÃO inventes funcionalidades não solicitadas."
+  - point: "Q-ARQ-3 abstraction obrigatória"
+    detail: "AC-B6 — render NUNCA chama Remotion directamente. SEMPRE via EditingProvider.render({...}). Esta é a decisão arquitectural mais importante de v1.0."
+  - point: "Brownfield discipline"
+    detail: "NÃO toques nas 21 tasks existentes do squad. Apenas adiciona pastas novas (squad/providers/, squad/templates/remotion/, squad/data/alturense/persona/)."
+  - point: "PT-PT obrigatório"
+    detail: "Todos os comentários, nomes de variáveis (quando aplicável), textos visíveis no vídeo. Verifica AC-C3 antes de pedir gate @qa."
+  - point: "Música royalty-free + LICENCE-AUDIO.md"
+    detail: "AC-B5 é mitigação R9 (risco legal). Sem LICENCE-AUDIO.md documentado, story NÃO passa gate."
+  - point: "Stub-safe BurnedSubtitle"
+    detail: "AC-B4 — quando subtitlesSrtPath é undefined, componente renderiza nada SEM erro. Q-ARQ-2 (sem Whisper v1.0) depende disto."
+  - point: "Red flags do bootstrap"
+    detail: "Red flags #1, #2, #3 do CLAUDE.md são out-of-scope desta story. NÃO os resolvas aqui."
+  - point: "R22 pricings [KC-2026-01]"
+    detail: "Render local = €0, então R22 NÃO bloqueia. Apenas nota: re-verificar pricing Remotion antes de adicionar 4º operador (linha 294 da story)."
+
+ac_priorities_for_dev:
+  start_with: "Tarefa 1 (Setup Remotion) → Tarefa 2 (Contratos Provider AC-A1, A3, A4) — paralelizáveis após setup"
+  critical_path: "Tarefa 1 → Tarefa 3 (EditingProvider AC-A2, B6) → Tarefas 4-6 (composition + scenes + overlays + música) → Tarefa 7 (render teste AC-C1)"
+  blocker: "Sem AC-A2 (EditingProvider) implementado, AC-B6 (render via interface) não pode ser validado. Tarefa 3 desbloqueia toda a Tarefa 7."
+
+effort_estimate:
+  total_days: "2-3"
+  source: "Inherited from @pm (handoff pm-to-sm); cross-validated with @analyst scaffold (~4,5 dias originais reduzidos por scaffold pronto)"
+  breakdown:
+    - "Tarefa 1 (setup): 0,5 dia"
+    - "Tarefas 2+3 (Providers + EditingProvider): 0,5 dia"
+    - "Tarefas 4-6 (composition + overlays + música): 1 dia"
+    - "Tarefa 7 (render teste): 0,5 dia"
+    - "Buffer learning curve Remotion (R20): 0,5-1 dia"
+
+dependencies_to_resolve_before_start:
+  - "Confirmar Node 18+ instalado (squad/config/tech-stack.md declara, mas verifica)"
+  - "Reservar 1 vídeo CapCut real do Alturense para Tarefa 8 — Eurico fornece ao @qa quando AC-C1 passar"
+  - "Decidir track royalty-free a usar (Uppbeat free tier recomendado em AC-B5)"
+
+next_action: >
+  Dex (@dev): activa @dev e arranca implementação da Story 1.1.
+  Comando: @dev *develop 1.1
+  Path da story: docs/stories/active/1.1.story.md
+  Modo recomendado: YOLO (story tem trace-back completo e zero ambiguidade).
+  Updates obrigatórios: marcar checkboxes das 8 tarefas + manter File List actualizada
+  + preencher Dev Agent Record progressivamente.
+
+after_dev_completes:
+  qa_gate: "@qa (Quinn) executa gate AC-C2: comparação lado-a-lado contra CapCut manual. Veredicto PASS/FAIL com 6 critérios documentados em docs/qa/1.1-remotion-vs-capcut.md."
+  if_qa_pass: "Story status InReview → Done. @devops (Gage) faz commit + push."
+  if_qa_fail: "Story volta a @dev com feedback específico (max 5 iterações via QA Loop antes de escalar)."
+  contingency: "Se @qa reprova >2 iterações, escalar a @architect (Aria) para avaliar fallback Shotstack v1.1 (R4 contingência documentada na story)."
+
+references:
+  - "docs/stories/active/1.1.story.md (status: Ready)"
+  - "PRD.md v1.0 §8.1 stack, §8.3 Q-ARQ-3 interfaces, §8.4 persistência, §11.1 MVP scope, §13.5 R4/R20/R9, §14 Alturense"
+  - "docs/research/2026-04-17-video-stack-decision.md §5 Camada 3 Remotion"
+  - "docs/research/samples/remotion-alturense-scaffold.md (REFERENCE — adaptar)"
+  - "docs/handoffs/archive/videoaipt-handoff-sm-to-po-20260418.yaml (consumido)"
+  - "CLAUDE.md §princípios inegociáveis, §arquitectura mental model"

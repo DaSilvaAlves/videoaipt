@@ -53,6 +53,15 @@ Desktop.ini
 
 # Claude Code (local settings only — shared settings.json can be committed)
 .claude/settings.local.json
+.claude/agent-memory/
+docs/.claude/settings.local.json
+docs/.claude/agent-memory/
+
+# QA evidence — CapCut original binaries with third-party music licence
+# (CapCut Free library tracks cannot be redistributed outside the CapCut editor).
+# Preserved locally as evidence for Story 1.2 but NOT versioned.
+docs/qa/altura11/altura11.mp4
+docs/qa/altura11/altura11.MP3
 
 # Test coverage
 coverage/

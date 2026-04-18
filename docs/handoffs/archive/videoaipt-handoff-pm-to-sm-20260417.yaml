@@ -5,10 +5,10 @@ handoff:
   to_agent: sm
   to_persona: River
   created: 2026-04-17
-  status: pending
-  consumed: false
-  consumed_at: null
-  consumed_by: null
+  status: consumed
+  consumed: true
+  consumed_at: "2026-04-18T00:00:00Z"
+  consumed_by: sm
 
 summary: >
   PRD v1.0 APPROVED via duplo tacit_approval do Eurico. Stack ratificada,

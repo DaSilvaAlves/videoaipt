@@ -1,0 +1,170 @@
+handoff:
+  id: videoaipt-handoff-qa-to-pm-20260418
+  from_agent: qa
+  from_persona: Quinn
+  to_agent: pm
+  to_persona: Morgan
+  created: 2026-04-18
+  status: consumed
+  consumed: true
+  consumed_at: "2026-04-18T22:00:00Z"
+  consumed_by: pm (Morgan) — decisão Opção 2; gerou pm-to-devops (push autorizado) + pm-to-po-story-1.2 (abertura ciclo Story 1.2)
+
+summary: >
+  Gate AC-C2 da Story 1.1 FALHOU por gap de requisitos (não de implementação).
+  Eurico entregou baseline CapCut real (altura11.mp4 — "Especial de Sábado —
+  Carapaus Fritos"). Render Remotion equivalente executado e frames extraídos.
+  Comparação revela que o workflow real do Alturense produz peças "cartaz
+  digital" com 4 componentes visuais permanentes (moldura azulejos + header
+  textual + card carimbo + footer laranja Take-Away) que a Story 1.1 não
+  menciona. Implementação @dev é fiel ao scope escrito — FAIL não volta a
+  @dev. Morgan decide entre 2 opções: expandir Story 1.1 (Opção 1) ou fechar
+  1.1 como fundação + abrir Story 1.2 para sistema visual Alturense (Opção 2).
+  Recomendação @qa: Opção 2.
+
+priority: HIGH
+
+context:
+  project: VIDEO-AI-PT
+  story_id: "1.1"
+  story_title: "Remotion Alturense template — 1ª peça funcional"
+  story_path: "docs/stories/active/1.1.story.md"
+  story_status: InReview
+  gate_doc: "docs/qa/1.1-remotion-vs-capcut.md"
+  language: PT-PT
+  r4_status: "mitigation não validada — decisão Morgan define como re-activar"
+
+gate_resultado:
+  veredicto_global: FAIL (AC-C2)
+  por_criterio:
+    pacing: CONCERNS
+    overlays: FAIL
+    musica: "PASS técnico / CONCERNS operacional (DEC-3 CapCut Free não para produção)"
+    legendas: N/A (ambos sem legendas)
+    cores: CONCERNS (paleta OK, falta sistema visual azul/laranja)
+    tom_geral: FAIL
+  grupos_ac_pre_gate:
+    grupo_a_providers: PASS (AC-A1..A4)
+    grupo_b_template: PASS B1-B4, B6, B7; CONCERNS B5 (música) e B8 (imports)
+    ac_c1_render_local: PASS (1080×1080 H.264 30fps 28,05s)
+    ac_c2_comparacao: FAIL (ver acima)
+    ac_c3_pt_pt: PASS ("Frango Assado no Forno", "€7,50")
+
+gap_de_requisitos_identificado:
+  componentes_ausentes:
+    - id: C1
+      nome: AlturenseFrame
+      descricao: "Moldura decorativa — padrão azulejos portugueses (azul/branco) lado esquerdo + sprig oliveira lado direito. Presente permanentemente em todos os frames do vídeo CapCut."
+    - id: C2
+      nome: AlturenseHeader
+      descricao: "Header textual permanente com 2 linhas centradas no topo: título ('ESPECIAL DE SÁBADO' ou equivalente para prato do dia) + subtítulo itálico '(à moda do Altura)'. Font serif. Sempre visível."
+    - id: C3
+      nome: AlturenseCard
+      descricao: "Card carimbo / selo central sobre o produto com o nome da refeição em caixa alta sans-serif (ex: 'CARAPAUS FRITOS'). Estilo sticker permanente — não animação spring de entrada."
+    - id: C4
+      nome: AlturenseFooter
+      descricao: "Faixa laranja sólida no rodapé: 'Take-Away · Snack Bar Alturense · Altura'. Permanente."
+  achado_tecnico_adicional:
+    - id: TECH-1
+      detalhe: "AlturenseCompositionProps.price é obrigatório (tipo string). Baseline CapCut real do Alturense NÃO mostra preço. Corrigir: price?: string + FinalScene render condicional do PriceBadge."
+  formato_observado:
+    capcut: "572×480 (~6:5 ou ~1.19:1) — formato nativo CapCut Free, não 1:1"
+    remotion: "1080×1080 (1:1 conforme PRD §11.1)"
+    observacao: "Remotion está alinhado com PRD Facebook 1:1. CapCut não está. Decisão Morgan: manter 1:1 como obrigação (PRD) ou flexibilizar para reproduzir o workflow actual do Eurico."
+
+decisao_a_tomar:
+  opcao_1:
+    nome: "Expansão de scope da Story 1.1"
+    como: >
+      @po Pax adiciona Grupo D de AC à Story 1.1 (AC-D1 AlturenseFrame,
+      AC-D2 AlturenseHeader, AC-D3 AlturenseCard, AC-D4 AlturenseFooter,
+      AC-D5 price?: string opcional). Story 1.1 volta a @dev para
+      implementar Grupo D (reaproveita Grupos A e B intactos). Re-gate
+      completo @qa.
+    pros:
+      - "História linear — Story 1.1 só fecha quando cliente valida"
+      - "Um único commit final para 'primeira peça funcional'"
+    contras:
+      - "Os 3 commits atómicos já feitos (97f38b3, 309f577, 0105b55) ficam sem push até re-gate"
+      - "@dev re-entra em contexto depois de já ter 'fechado' mentalmente a story"
+      - "Risco de mais iterações se Grupo D também tiver gaps"
+  opcao_2:
+    nome: "Fechar Story 1.1 como fundação + abrir Story 1.2"
+    como: >
+      Story 1.1 transita InReview → Done com redefinição de título para
+      'Fundação Q-ARQ-3 + template base genérico'. @devops faz push dos
+      3 commits. @po + @pm criam Story 1.2 'Sistema visual Alturense —
+      AlturenseFrame/Header/Card/Footer + price opcional + follow-ups
+      técnicos (DEC-1 alias, DEC-2 .gitignore)'.
+    pros:
+      - "Fundação arquitectural (Q-ARQ-3, EditingProvider, pipeline render, PT-PT, docs) fica imediatamente disponível no repo"
+      - "Não penaliza @dev que cumpriu literalmente os AC escritos"
+      - "Isola concerns 'fundação técnica' vs 'identidade visual de cliente'"
+      - "Fundação reutilizável por outros clientes futuros (não herdam identidade Alturense)"
+      - "Story 1.2 é um novo ciclo limpo com AC próprios e focados"
+    contras:
+      - "Quebra a narrativa 'Story 1.1 = 1ª peça funcional'. O título desvia para 'fundação'."
+      - "Requer transparência: Story 1.1 Done ≠ primeira produção publicável. Só após Story 1.2 é que há peça realmente publicável."
+  recomendacao_qa: opcao_2
+
+artefactos_produzidos_pelo_qa:
+  - "docs/qa/1.1-remotion-vs-capcut.md — gate completo + secção 'Comparação lado-a-lado' com análise dos 6 critérios"
+  - "docs/qa/altura11/capcut-frame-05s.png, capcut-frame-15s.png, capcut-frame-25s.png — 3 frames do baseline CapCut"
+  - "docs/qa/altura11/remotion-frame-05s.png, remotion-frame-15s.png, remotion-frame-25s.png — 3 frames do render Remotion"
+  - "docs/qa/altura11/frango-assado-19-04.png — foto original do prato fornecida pelo Eurico"
+  - "docs/qa/altura11/frango-final-19-04.png (via ffmpeg) — crop 1080×1080 da foto, staged em template public/placeholder/"
+  - "docs/qa/altura11/qa-render-frango.js — script de render adaptado (artefacto QA, não código produtivo)"
+  - "squad/data/alturense/videos/2026-04-18-qa-frango/final.mp4 — render Remotion executado (gitignored)"
+  - "Secção 'QA Results' da Story 1.1 actualizada (única secção autorizada ao @qa)"
+
+assets_staged_no_template:
+  - "squad/templates/remotion/alturense-default/public/placeholder/frango-final-19-04.png (crop 1080×1080)"
+  - "squad/templates/remotion/alturense-default/public/music/altura11-proxy.mp3 (proxy sonoro — NÃO para produção, licença CapCut)"
+  notas: "Estes assets foram staged em public/ para permitir o render de teste. @devops decide se ficam versionados, se vão para docs/qa/samples/, ou se são removidos antes de push."
+
+dec_status_final:
+  DEC-1: APPROVE (inalterado) — imports relativos, follow-up @architect
+  DEC-2: APPROVE (inalterado) — persona force-add, follow-up @data-engineer (pode entrar na Story 1.2)
+  DEC-3: CONCERNS — Eurico usa "Latin Guitar" CapCut Free Library, que NÃO está na lista permitida de LICENCE-AUDIO.md. Eurico descarrega equivalente Uppbeat free tier antes de primeira produção.
+  DEC-4: APPROVE (inalterado) — vars técnicas em inglês
+
+next_action: >
+  Morgan (@pm):
+  1. Ler docs/qa/1.1-remotion-vs-capcut.md secção 'Comparação lado-a-lado'
+     (frames visuais estão em docs/qa/altura11/).
+  2. Decidir entre Opção 1 ou Opção 2.
+  3. Se Opção 1: handoff pm-to-po para Pax adicionar Grupo D à Story 1.1.
+  4. Se Opção 2: handoff pm-to-devops (push dos 3 commits) + handoff pm-to-po
+     (Pax inicia Story 1.2 com AC para 4 componentes visuais + price opcional +
+     follow-ups técnicos DEC-1/DEC-2).
+
+estimated_effort_pm: "15-30 min (ler gate + frames + decidir + handoff)"
+
+observacoes_operacionais_nao_bloqueantes:
+  - "Track de música: Eurico confirmou 'Latin Guitar' da biblioteca CapCut Free. Esta biblioteca NÃO está na lista permitida (Uppbeat/Artlist/Epidemic/YouTube Audio Library). Antes de primeira produção publicável, Eurico descarrega Uppbeat equivalente e preenche LICENCE-AUDIO.md."
+  - "O vídeo altura11.mp4 usado como baseline foi produzido em 2026-04-17 (creation_time do ffprobe). É carapaus fritos de sábado anterior, não o frango assado de hoje. Está OK como baseline porque mostra o workflow visual típico do Alturense."
+  - "Os frames do Remotion em 5s (clip1 café sólido) e 15s (clip2 verde-oliva sólido) parecem vazios apenas porque os placeholder clips são fundos de cor sólida. Com clips reais da Camada 1 (VideoProvider kling-v2-fal no futuro), estas cenas terão vídeo de produto. Isto é funcionalmente correcto — validação é de estrutura, não de conteúdo."
+
+known_constraints:
+  - "@devops NÃO faz push antes de Morgan decidir o caminho (evita push de fundação que vai ser refatorada se Opção 1)"
+  - "Story 1.2 (se aberta) será primeira story do workflow @po + @dev + @qa depois de decidir, pode ter prioridade R4 mitigation alta"
+  - "R4 (ALTA/ALTA) continua não-mitigado — só após Story 1.2 com componentes visuais Alturense há peça comparável ao CapCut"
+  - "Eurico mandou foto + preço + baseline — input completo do cliente está dado"
+
+references:
+  - "docs/stories/active/1.1.story.md (Status: InReview; QA Results com gate FAIL documentado)"
+  - "docs/qa/1.1-remotion-vs-capcut.md (documento authoritative do gate)"
+  - "docs/qa/altura11/ (6 frames PNG + altura11.mp4 baseline + frango-assado-19-04.png original + qa-render-frango.js)"
+  - "squad/data/alturense/videos/2026-04-18-qa-frango/final.mp4 (render Remotion gitignored)"
+  - "docs/handoffs/archive/videoaipt-handoff-qa-to-eurico-20260418.yaml (consumido — input recebido)"
+  - "docs/handoffs/archive/videoaipt-handoff-dev-to-qa-20260418.yaml (consumido — gate executado)"
+  - "Commits intocados: 97f38b3, 309f577, 0105b55"
+  - "PRD v1.0 §13.5 (R4 mitigation), §14 (caso Alturense), §11.1 (formato 1:1)"
+
+cleanup_note: >
+  Quinn (@qa) executou gate rigoroso respeitando limites: não modificou código,
+  não fez commits, não tocou em secções da story fora de QA Results, não
+  implementou fixes. Toda a análise visual vem da comparação honesta entre
+  baseline CapCut real e render Remotion equivalente produzido só para este
+  gate. O achado "Story 1.1 omitiu sistema visual Alturense" é crítico para
+  R4 mitigation e requer decisão de produto — por isso escalação a @pm.

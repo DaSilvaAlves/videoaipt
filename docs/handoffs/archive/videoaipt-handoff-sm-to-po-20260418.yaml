@@ -1,0 +1,80 @@
+handoff:
+  id: videoaipt-handoff-sm-to-po-20260418
+  from_agent: sm
+  from_persona: River
+  to_agent: po
+  to_persona: Pax
+  created: 2026-04-18
+  status: consumed
+  consumed: true
+  consumed_at: 2026-04-18
+  consumed_by: po
+  result: GO (10/10 PASS)
+
+summary: >
+  River (@sm) criou Story 1.1 "Remotion Alturense template — 1ª peça funcional"
+  em docs/stories/active/1.1.story.md. Draft completo com AC segmentados em 3
+  grupos (A: Providers Q-ARQ-3, B: Template Remotion, C: Validação @qa gate com
+  comparação lado-a-lado contra CapCut). Handoff pm-to-sm consumido. Próximo passo:
+  Pax (@po) executa validação com 10-point checklist e emite GO/NO-GO.
+
+context:
+  project: VIDEO-AI-PT
+  story_id: "1.1"
+  story_title: "Remotion Alturense template — 1ª peça funcional"
+  story_path: "docs/stories/active/1.1.story.md"
+  story_status: Draft
+  epic: "Epic 1 — Camada 3 Remotion + Abstraction Layer"
+  prd_version: v1.0
+  language: PT-PT
+
+  decisions_made_by_sm:
+    - "Q-SM-1: Brownfield (squad/ existente preservado; story adiciona Providers + template)"
+    - "Q-SM-2: Story única com AC segmentados (3 grupos: A/B/C)"
+    - "Q-SM-3: Comparação CapCut como AC explícito AC-C2, não apenas QA criterion"
+
+  ac_groups:
+    A_providers_q_arq_3:
+      - "AC-A1: 5 interfaces documentadas em squad/providers/interfaces/"
+      - "AC-A2: EditingProvider remotion-local implementado"
+      - "AC-A3: 4 stubs documentados (Kling, Gemini, text-from-script, local-folder)"
+      - "AC-A4: persona.yaml Alturense com bloco providers:"
+    B_template_remotion:
+      - "AC-B1: Estrutura completa squad/templates/remotion/alturense-default/"
+      - "AC-B2: AlturenseComposition 1080x1080 30fps 20-30s TransitionSeries fade-0.5s"
+      - "AC-B3: Overlays TextOverlay + PriceBadge configuráveis de text-overlays.yaml"
+      - "AC-B4: BurnedSubtitle via @remotion/captions stub-safe quando undefined"
+      - "AC-B5: Música royalty-free + LICENCE-AUDIO.md obrigatório"
+      - "AC-B6: Render via EditingProvider (não Remotion directo)"
+      - "AC-B7: Documentação inline PT-PT suficiente para outro dev replicar"
+      - "AC-B8: Absolute imports TS/JS"
+    C_validacao:
+      - "AC-C1: Render de teste local bem-sucedido com assets placeholder"
+      - "AC-C2: Comparação lado-a-lado contra CapCut manual — gate @qa"
+      - "AC-C3: PT-PT correcto em todos os textos visíveis"
+
+  risks_addressed:
+    - "R4 (ALTA/ALTA): Mitigado por AC-C2 — gate @qa obrigatório"
+    - "R20 (MÉDIA/ALTA): Scaffold disponível; esforço estimado 2-3 dias"
+    - "R9 (ALTA): Mitigado por AC-B5 — LICENCE-AUDIO.md obrigatório"
+    - "R22: Nota aberta; não bloqueia (render local = €0)"
+
+next_action: >
+  Pax (@po): executar validação 10-point checklist da Story 1.1.
+  Comando: @po *validate-story-draft 1.1
+  Path da story: docs/stories/active/1.1.story.md
+  Decisão esperada: GO (status Draft → Approved) ou NO-GO (lista de fixes p/ @sm).
+  Se GO: story pronta para @dev implementar (2-3 dias estimados).
+
+after_po_validates:
+  if_go: "@dev (Dex) implementa Story 1.1 — 2-3 dias estimados incluindo learning curve Remotion"
+  if_no_go: "@sm (River) recebe lista de fixes e actualiza 1.1.story.md"
+  then_qa: "@qa (Quinn) executa gate com comparação lado-a-lado CapCut (AC-C2)"
+  then_devops: "@devops (Gage) faz commit + push após @qa PASS"
+
+references:
+  - "docs/stories/active/1.1.story.md"
+  - "PRD.md v1.0 §8.1, §8.2, §8.3, §8.4, §11.1, §13.5, §14"
+  - "docs/research/2026-04-17-video-stack-decision.md §5 Camada 3"
+  - "docs/research/samples/remotion-alturense-scaffold.md"
+  - "docs/handoffs/archive/videoaipt-handoff-pm-to-sm-20260417.yaml (consumido)"

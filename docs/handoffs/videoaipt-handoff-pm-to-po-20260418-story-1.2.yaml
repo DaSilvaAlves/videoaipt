@@ -1,0 +1,218 @@
+handoff:
+  id: videoaipt-handoff-pm-to-po-20260418-story-1.2
+  from_agent: pm
+  from_persona: Morgan
+  to_agent: po
+  to_persona: Pax
+  created: 2026-04-18
+  status: pending
+  consumed: false
+  consumed_at: null
+  consumed_by: null
+
+summary: >
+  Morgan (@pm) decidiu Opção 2 sobre o gate AC-C2 FAIL da Story 1.1.
+  Story 1.1 ficou com fundação Q-ARQ-3 + template base genérico (Done).
+  Morgan instrui Pax (@po) a iniciar o ciclo de criação da Story 1.2
+  "Sistema visual Alturense" que fecha o gap do gate: 4 componentes visuais
+  permanentes (AlturenseFrame, AlturenseHeader, AlturenseCard, AlturenseFooter)
+  + price opcional + follow-ups técnicos DEC-1 e DEC-2. Esta story é R4
+  mitigation real — fecha a comparação lado-a-lado vs CapCut. Pax delega a
+  @sm River para draft da story conforme workflow AIOX.
+
+priority: HIGH
+
+context:
+  project: VIDEO-AI-PT
+  epic_id: "1 (Camada 3 — Edição programática)"
+  story_numero: "1.2"
+  story_titulo_proposto: "Sistema visual Alturense — AlturenseFrame + AlturenseHeader + AlturenseCard + AlturenseFooter + price opcional + follow-ups técnicos"
+  parent_story: "1.1 (Fundação Q-ARQ-3 + template base genérico) — Done"
+  decisao_pm: opcao_2 (ver docs/handoffs/archive/videoaipt-handoff-qa-to-pm-20260418.yaml)
+  language: PT-PT
+  r4_gate: "Story 1.2 é a story que fecha R4 mitigation — qualidade Remotion >= CapCut manual"
+
+gap_de_requisitos_identificado_no_gate_1_1:
+  descricao: >
+    O gate AC-C2 da Story 1.1 revelou que o workflow real do Alturense produz
+    peças "cartaz digital" com 4 componentes visuais permanentes que a Story
+    1.1 não mencionou. A comparação 6-critérios resultou em 2 FAIL (overlays,
+    tom geral), 3 CONCERNS (pacing, música, cores), 1 N/A (legendas).
+    O template 1.1 entrega reel genérico; o Alturense precisa de cartaz
+    editorial identitário.
+  evidencia: "docs/qa/1.1-remotion-vs-capcut.md + 6 frames PNG em docs/qa/altura11/"
+  baseline: "docs/qa/altura11/altura11.mp4 — 'Especial de Sábado — Carapaus Fritos (à moda do Altura)'"
+
+scope_proposto_da_story_1_2:
+  grupos_de_ac:
+    grupo_A_componentes_visuais_alturense:
+      descricao: "4 componentes React permanentes sobrepostos ao template 1.1 via nova prop opcional (ex: brandOverlaySystem)"
+      AC-A1:
+        nome: "AlturenseFrame"
+        detalhe: >
+          Componente React que renderiza molduras decorativas laterais:
+          - Lado esquerdo: padrão de azulejos portugueses (azul/branco)
+          - Lado direito: sprig de oliveira estilizada
+          - Ambos ocupam largura estreita (~8-12% do frame cada) e altura integral
+          - Presente em todas as 3 cenas (Clip1Scene, Clip2Scene, FinalScene)
+          - Assets em assets/brand-alturense/ (frame-esquerda.svg ou .png + frame-direita.svg ou .png)
+      AC-A2:
+        nome: "AlturenseHeader"
+        detalhe: >
+          Componente React permanente no topo com 2 linhas:
+          - Linha 1: título em maiúsculas, font serif (ex: "ESPECIAL DE SÁBADO" ou "PRATO DO DIA" — configurável via prop)
+          - Linha 2: subtítulo itálico (ex: "(à moda do Altura)") — fixo por persona
+          - Cor texto: café #6B3A2A sobre fundo creme semi-transparente (ou branco puro)
+          - Altura aproximada: 12-15% do frame
+          - Ler conteúdo de `persona.yaml > brand_header_default` e `persona.yaml > brand_header_subtitle`
+      AC-A3:
+        nome: "AlturenseCard"
+        detalhe: >
+          Componente React "selo/carimbo" com nome do prato em caixa alta sans-serif:
+          - Posição: terço superior/médio do frame, sobreposto ao produto
+          - Estilo: fundo branco puro, borda fina café, cantos arredondados ligeiros (~4-6px)
+          - Tipografia: Montserrat 900 em caixa alta, letter-spacing aumentado (~2-4px)
+          - Entrada: SEM spring animation — é um sticker estático (coerente com observação do gate que diz "permanente, não animação")
+          - Opcional por prop (ex: props.cardMode = "sticker" ativa; "none" desativa)
+          - Substitui (ou coexiste com) o TextOverlay existente da Story 1.1 consoante design decision do @dev
+      AC-A4:
+        nome: "AlturenseFooter"
+        detalhe: >
+          Componente React permanente no rodapé:
+          - Faixa laranja sólida (cor a definir — ex: #E8742A ou extrair da palete dos frames do CapCut — @ux-design-expert sugerido para audit de cor)
+          - Texto: "Take-Away · Snack Bar Alturense · Altura" (separadores · ou • conforme escolha)
+          - Tipografia: Montserrat 700, cor branco/creme, letter-spacing ligeiro
+          - Altura aproximada: 8-10% do frame
+          - Conteúdo configurável via `persona.yaml > brand_footer_text`
+    grupo_B_ajustes_template_base:
+      AC-B1:
+        nome: "price?: string opcional"
+        detalhe: >
+          Alterar `AlturenseCompositionProps.price` de `string` obrigatório para
+          `string | undefined` opcional. Actualizar `FinalScene.tsx` para render
+          condicional: `{price ? <PriceBadge precoFormatado={price} /> : null}`.
+          `test-render.js` pode continuar a passar preço — nenhuma regressão.
+          Racional: baseline CapCut real do Alturense NÃO mostra preço; forçar
+          preço contradiz o workflow real.
+      AC-B2:
+        nome: "brandOverlaySystem?: 'alturense' | 'none' opcional"
+        detalhe: >
+          Nova prop em `AlturenseCompositionProps` que controla se o sistema
+          visual Alturense (Grupo A) é renderizado. Default: 'none' (preserva
+          compatibilidade com Story 1.1 como template genérico). Alturense
+          passa 'alturense' na sua persona.yaml runtime config.
+          Racional: fundação reutilizável por outros clientes — Story 1.1
+          fica intacta como base genérica; identidade Alturense activa-se
+          por config.
+    grupo_C_follow_ups_tecnicos:
+      AC-C1:
+        nome: "DEC-1 — Alias de imports"
+        detalhe: >
+          Investigar alias alternativo ao `@/` que não colide com `@remotion/cli`.
+          Candidatos: `$/`, `~/`, `#/`. Se algum funcionar, aplicar em todos os
+          imports do template. Se nenhum funcionar, documentar formalmente em
+          ADR (docs/architecture/adr-001-remotion-alias.md) e manter imports
+          relativos de 1 nível. Responsabilidade sugerida: @architect (Aria).
+      AC-C2:
+        nome: "DEC-2 — .gitignore refinement"
+        detalhe: >
+          Refinar `.gitignore` na raiz para ignorar apenas pastas runtime:
+          `squad/data/*/videos/`, `squad/data/*/posts/`, `squad/data/*/stories/`,
+          `squad/data/*/calendar/`. Versionar `squad/data/*/persona/` e
+          `squad/data/*/research/` sem precisar de `git add -f`.
+          Responsabilidade sugerida: @data-engineer (Dara).
+    grupo_D_validacao:
+      AC-D1:
+        nome: "Render local com sistema visual activo"
+        detalhe: "Executar render completo com brandOverlaySystem='alturense' + todos os 4 componentes activos + foto real do prato. Validar via ffprobe: 1080×1080 H.264 30fps 20-30s."
+      AC-D2:
+        nome: "Gate @qa comparação lado-a-lado vs CapCut (R4 gate real)"
+        detalhe: >
+          @qa Quinn executa comparação lado-a-lado contra altura11.mp4 (baseline
+          já disponível em docs/qa/altura11/). 6 critérios AC-C2 da Story 1.1:
+          pacing, overlays, música, legendas, cores, tom geral. Gate decision
+          **PASS obrigatório** para transitar Done — este é o R4 mitigation
+          real. Se FAIL, QA Loop max 5 iterações; se 3+ reprovações, escalar
+          @architect (Aria) para avaliar Shotstack como fallback Camada 3
+          (v1.1 contingência — PRD §13.5).
+      AC-D3:
+        nome: "PT-PT em todos os textos visíveis (Header, Card, Footer)"
+        detalhe: "Mesmo critério de AC-C3 da Story 1.1. Sem PT-BR nos textos de header/footer/card."
+
+formato_e_aspecto:
+  decisao_pm: "manter_1_1"
+  razao: >
+    PRD v1.0 §11.1 define Facebook 1:1 (1080×1080) como target MVP. O CapCut
+    actual do Eurico produz 572×480 (formato não-1:1) porque é limitação do
+    CapCut Free, não preferência de produto. Story 1.2 mantém 1:1 e Eurico
+    terá peça superior tecnicamente (resolução 4× maior) e no formato correcto
+    para Facebook feed. Esta é uma UPGRADE sobre o workflow actual, não um
+    downgrade.
+
+assets_disponiveis_para_design:
+  baseline_visual:
+    - "docs/qa/altura11/altura11.mp4 (vídeo CapCut completo)"
+    - "docs/qa/altura11/capcut-frame-05s.png, capcut-frame-15s.png, capcut-frame-25s.png (3 frames extraídos)"
+  nota: "@ux-design-expert (Uma) ou @architect podem fazer audit destes frames para extrair exactamente:"
+  itens_a_auditar:
+    - "Cor exacta do footer laranja (HEX)"
+    - "Fonte do header serif (ou equivalente Google Fonts)"
+    - "Padrão exacto dos azulejos (construir SVG ou usar imagem)"
+    - "Proporções exactas dos 4 componentes (% do frame)"
+    - "Cor do texto do card (ou branco puro)"
+
+recomendacoes_de_cadeia:
+  workflow_proposto:
+    1: "@po Pax valida este handoff + decide se chama @ux-design-expert (Uma) para audit de design ANTES da criação da story, ou se delega ao @sm River criar a story com AC genéricos e deixar design decisions para @dev na fase de implementação."
+    2: "@sm River executa *draft ou *create-story → produz docs/stories/active/1.2.story.md conforme template AIOX, usando os AC deste handoff como base."
+    3: "@po Pax valida a story criada pelo @sm (10-point checklist) — GO/NO-GO."
+    4: "Se GO: @dev Dex implementa em modo YOLO ou interactive consoante complexidade. Recomendação Morgan: **interactive** para esta story — há decisões de design (cores exactas, padrões dos azulejos) que beneficiam de confirmação."
+    5: "@qa Quinn executa gate final — AC-D2 é o R4 mitigation real."
+    6: "Se PASS: handoff qa-to-devops para push."
+  estimativa_effort:
+    draft_sm: "30-60 min"
+    validacao_po: "15-30 min"
+    implementacao_dev: "1-2 dias (4 componentes novos + refactor props + assets)"
+    gate_qa: "30-60 min (baseline já disponível, comparação é pura)"
+    total: "~2-3 dias"
+
+observacoes_importantes:
+  sobre_a_story_1_1:
+    - "Story 1.1 é referência arquitectural da Story 1.2 — 1.2 SOBREPÕE 1.1, não substitui."
+    - "Código do 1.1 (AlturenseComposition, Clip1Scene, Clip2Scene, FinalScene, TextOverlay, PriceBadge, MusicLayer, BurnedSubtitle, EditingProvider) fica INTACTO."
+    - "Story 1.2 adiciona: 4 novos componentes, 1 prop nova (brandOverlaySystem), 1 prop ajustada (price opcional), 1 config section em persona.yaml (brand_header, brand_footer)."
+  sobre_a_musica:
+    - "Follow-up Eurico (já comunicado): descarregar track Uppbeat free tier equivalente a 'Latin Guitar' + preencher LICENCE-AUDIO.md. Independente desta story; pode acontecer em paralelo."
+  sobre_o_ux_design_expert:
+    - "Sugestão Morgan: Pax considera chamar @ux-design-expert (Uma) para produzir um mini-spec de design system Alturense antes do @sm criar a story. Inputs: 3 frames CapCut + PRD §14. Outputs: cores HEX exactas, proporções, padrões vetoriais, tipografia definitiva. Isto reduz ambiguidade durante implementação @dev."
+    - "Alternativa: criar story directo com AC que pedem ao @dev decidir (risco: @dev pode divergir do look Alturense real)."
+
+next_action: >
+  Pax (@po):
+  1. Ler este handoff + docs/handoffs/archive/videoaipt-handoff-qa-to-pm-20260418.yaml
+     (contexto da decisão) + docs/qa/1.1-remotion-vs-capcut.md (evidência do gap).
+  2. Decidir workflow:
+     - (A) Chamar @ux-design-expert Uma para audit de design antes do *draft
+     - (B) @sm River cria story directo com AC baseados neste handoff
+  3. Se (A): criar handoff po-to-ux (não pm-to-ux — Pax orquestra). Quando Uma
+     entrega spec de design, Pax passa a @sm.
+  4. Se (B): passar directamente a @sm River com instrução de *draft da Story 1.2.
+  5. Consumir este handoff (marcar consumed, mover para archive, actualizar INDEX).
+
+estimated_effort_po: "30 min (ler contexto + decidir workflow A vs B + gerar handoff seguinte)"
+
+references:
+  - "docs/handoffs/archive/videoaipt-handoff-qa-to-pm-20260418.yaml (decisão @qa → @pm)"
+  - "docs/qa/1.1-remotion-vs-capcut.md (gate authoritative)"
+  - "docs/qa/altura11/ (evidência visual)"
+  - "docs/stories/completed/1.1.story.md (após @devops arquivar) OU docs/stories/active/1.1.story.md (durante transição)"
+  - "PRD v1.0 §13.5 (R4 mitigation), §14 (caso Alturense), §11.1 (1:1 Facebook), §8.3 (Q-ARQ-3)"
+  - "CLAUDE.md §Brand-persona em Gaps do squad original (Alturense é brand-mode, não pessoa)"
+
+cleanup_note: >
+  Esta story fecha o gap entre "fundação técnica genérica" (Story 1.1) e
+  "peça publicável com identidade Alturense" (Story 1.2). É a story que
+  valida R4 mitigation de forma real — @qa só pode fechar Done se qualidade
+  for EQUIVALENTE OU SUPERIOR ao CapCut manual. A fundação Story 1.1 é
+  reutilizável; a identidade Story 1.2 é cliente-específica. Este padrão
+  é a base do modelo SaaS Fase 2 da comunidade [IA]AVANÇADA PT.

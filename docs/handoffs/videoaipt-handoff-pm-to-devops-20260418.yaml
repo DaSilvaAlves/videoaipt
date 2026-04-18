@@ -1,0 +1,150 @@
+handoff:
+  id: videoaipt-handoff-pm-to-devops-20260418
+  from_agent: pm
+  from_persona: Morgan
+  to_agent: devops
+  to_persona: Gage
+  created: 2026-04-18
+  status: pending
+  consumed: false
+  consumed_at: null
+  consumed_by: null
+
+summary: >
+  Morgan (@pm) decidiu Opção 2 sobre o gate AC-C2 FAIL da Story 1.1. Story 1.1
+  é redefinida como "Fundação Q-ARQ-3 + template base genérico" e transita para
+  Done. Gage (@devops) está autorizado a fazer push dos 3 commits atómicos do
+  @dev (97f38b3, 309f577, 0105b55) e arquivar Story 1.1 em docs/stories/completed/.
+  ATENÇÃO: antes do push, remover 2 assets staged pelo @qa que não pertencem à
+  fundação genérica (ver secção `assets_a_remover_antes_do_push`).
+
+priority: HIGH
+
+context:
+  project: VIDEO-AI-PT
+  story_id: "1.1"
+  story_title_original: "Remotion Alturense template — 1ª peça funcional"
+  story_title_redefinido: "Fundação Q-ARQ-3 + template Remotion base genérico"
+  decisao_pm: opcao_2 (ver docs/handoffs/videoaipt-handoff-qa-to-pm-20260418.yaml)
+  gate_doc: "docs/qa/1.1-remotion-vs-capcut.md"
+  language: PT-PT
+
+authorization:
+  action: push_and_archive
+  commits_autorizados:
+    - hash: "97f38b3"
+      msg: "feat: implement Q-ARQ-3 Provider contracts and EditingProvider remotion-local [Story 1.1]"
+    - hash: "309f577"
+      msg: "feat: add Alturense Remotion template (Camada 3) [Story 1.1]"
+    - hash: "0105b55"
+      msg: "fix(remotion): pass props via JSON file + add staticFile resolver + test assets [Story 1.1]"
+  branch_origem: master
+  branch_destino: master (ou main se remote configurado diferente — confirmar)
+  remote: "A confirmar (git remote -v). Se não existe ainda, criar e configurar — é parte do Passo A do bootstrap."
+
+precondicoes_antes_do_push:
+  1_remote_git:
+    detalhe: "Este projecto é greenfield — pode não ter remote git configurado ainda. Se não existe, criar repo GitHub (privado inicial, propriedade Eurico) e configurar como origin. Se já existe, confirmar que está sincronizado."
+    comando_verificacao: "git remote -v"
+    se_nao_existe: "devops cria repo privado no GitHub, configura origin, verifica ramos"
+  2_stage_sanitization:
+    detalhe: "Há ficheiros untracked do @qa staged em public/ do template que NÃO pertencem à fundação genérica. Remover antes do push."
+    ver_seccao: "assets_a_remover_antes_do_push"
+
+assets_a_remover_antes_do_push:
+  razao: >
+    Estes ficheiros foram staged pelo @qa Quinn durante o gate AC-C2 para permitir
+    o render de teste com dados reais do Alturense. Não pertencem à fundação
+    genérica do template Remotion. Devem sair de public/ antes do push para:
+    (1) manter o template Alturense-default LIMPO de identidade de cliente;
+    (2) evitar que os ficheiros apareçam no próximo push do @devops.
+  ficheiros:
+    - path: "squad/templates/remotion/alturense-default/public/placeholder/frango-final-19-04.png"
+      accao: remover ou mover
+      destino_sugerido: "docs/qa/samples/frango-final-19-04.png (preservar histórico QA)"
+      razao: "Foto do prato do Alturense de 19/04 — é artefacto de QA, não de template"
+    - path: "squad/templates/remotion/alturense-default/public/music/altura11-proxy.mp3"
+      accao: remover
+      destino_sugerido: "eliminar (licença CapCut Free não é para produção)"
+      razao: "Proxy sonoro extraído do CapCut — não é royalty-free validado, viola AC-B5/R9 se for comitado"
+  verificacao_pos_sanitization:
+    - "public/placeholder/ fica apenas com: clip-01.png, clip-01.mp4, clip-02.png, clip-02.mp4, design-final.png, test-subtitles.srt (os que o @dev gerou originalmente)"
+    - "public/music/ fica apenas com: README.md (o track real ainda não está disponível; warm-background-01.mp3 é silent placeholder regenerável pelo operador)"
+  nota: "O script qa-render-frango.js em docs/qa/altura11/ pode continuar versionado — é artefacto QA legítimo. O render output em squad/data/ está gitignored."
+
+story_lifecycle_actions:
+  1_actualizar_titulo:
+    quem: "Morgan (@pm) — já executado antes deste handoff"
+    o_que: "Título da Story 1.1 redefinido para 'Fundação Q-ARQ-3 + template Remotion base genérico' no docs/stories/active/1.1.story.md"
+  2_transitar_status:
+    quem: "Morgan (@pm) — já executado antes deste handoff"
+    o_que: "Status InReview → Done no docs/stories/active/1.1.story.md"
+  3_mover_para_completed:
+    quem: "Gage (@devops) — parte deste handoff"
+    o_que: "mv docs/stories/active/1.1.story.md docs/stories/completed/1.1.story.md"
+    ordem: "fazer depois do commit do push (para que o commit capture a story com status Done na pasta active)"
+    alternativa: "Fazer antes do push e commitar a movimentação junto ao push da fundação — mais limpo"
+
+ordem_recomendada_execucao:
+  1: "Verificar `git remote -v`. Se não configurado, criar repo GitHub e configurar origin."
+  2: "Remover assets staged pelo @qa (ver `assets_a_remover_antes_do_push`): mover frango-final-19-04.png para docs/qa/samples/, eliminar altura11-proxy.mp3."
+  3: "Verificar `git status` — deve mostrar apenas o que quer commit (sem os 2 assets QA em public/)."
+  4: "Commit adicional pequeno se necessário (ex: mudança de título da Story 1.1 + sanitization): `chore(story): redefine Story 1.1 as foundation + sanitize QA artefacts [Story 1.1]`"
+  5: "git push master (ou main) — primeiro push do projecto."
+  6: "mv docs/stories/active/1.1.story.md docs/stories/completed/1.1.story.md + commit de arquivamento + push."
+  7: "Confirmar no GitHub que os 3 commits atómicos + commits de sanitization/arquivamento estão presentes."
+
+pre_push_gates:
+  coderabbit: "Executar CodeRabbit CLI em WSL antes do push (conforme protocolo AIOX): `wsl bash -c 'cd /mnt/c/Users/XPS/Documents/videoaipt && ~/.local/bin/coderabbit --prompt-only -t committed --base main'`. Se não existe base main ainda (primeiro push), saltar este gate nesta iteração e documentar para aplicar à próxima."
+  lint_typecheck: "Não existem comandos npm test/lint/typecheck configurados no projecto greenfield ainda (ver CLAUDE.md §Estado do projecto). Este é follow-up do Passo A (infraestrutura) — não bloquear este push."
+  verificar_gitignore: "Confirmar que `squad/data/*` continua gitignored e que os ficheiros runtime (final.mp4 etc.) não foram acidentalmente staged."
+
+context_preservation:
+  handoffs_a_preservar_no_repo:
+    - "docs/handoffs/archive/videoaipt-handoff-dev-to-qa-20260418.yaml (consumido)"
+    - "docs/handoffs/archive/videoaipt-handoff-qa-to-eurico-20260418.yaml (consumido)"
+    - "docs/handoffs/archive/videoaipt-handoff-qa-to-pm-20260418.yaml (será consumido por este handoff — Morgan move após executar)"
+  docs_qa_a_preservar:
+    - "docs/qa/1.1-remotion-vs-capcut.md (gate completo)"
+    - "docs/qa/altura11/ (incluindo altura11.mp4, 6 frames PNG, foto do prato original, qa-render-frango.js)"
+  razao: "Estes artefactos são evidência QA que deve viver no repo para auditoria, compreensão de gaps de requisitos, e input da Story 1.2."
+
+follow_ups_conhecidos:
+  nao_bloqueantes_para_este_push:
+    - "Eurico descarrega track Uppbeat free tier equivalente a 'Latin Guitar' e preenche LICENCE-AUDIO.md (DEC-3)"
+    - "Squad renaming (social-media-squad → videoaipt-squad) — tarefa do Passo A ainda pendente"
+    - "DEC-1 imports relativos vs @/ alias — follow-up @architect (pode entrar na Story 1.2)"
+    - "DEC-2 persona force-add — follow-up @data-engineer refina .gitignore para versionar persona/ sem -f (pode entrar na Story 1.2)"
+  bloqueantes_para_proxima_story:
+    - "Story 1.2 será criada em paralelo por @po Pax (ver handoff pm-to-po-story-1.2)"
+
+riscos_deste_push:
+  baixo:
+    - "Push inicia historial público do projecto — nome do repo, visibilidade (privado inicial recomendado) devem ser confirmados com Eurico"
+  medio:
+    - "Se CodeRabbit CLI não conseguir correr (falta de base main ainda ou WSL não configurado), documentar e prosseguir — follow-up @devops"
+
+next_action: >
+  Gage (@devops):
+  1. Ler docs/handoffs/videoaipt-handoff-qa-to-pm-20260418.yaml (contexto completo) e docs/qa/1.1-remotion-vs-capcut.md (gate).
+  2. Executar ordem_recomendada_execucao passo a passo.
+  3. Confirmar com Eurico visibilidade do repo (privado inicial).
+  4. Ao concluir push + arquivamento da Story 1.1: criar handoff devops-to-pm (ou devops-to-po) a confirmar sucesso do push e indicar que Story 1.2 pode avançar sem bloqueios.
+  5. Consumir este handoff (marcar consumed, mover para archive, actualizar INDEX).
+
+estimated_effort_devops: "30-60 min (setup remote se necessário + sanitization + 2 commits + 1 push + verificação)"
+
+references:
+  - "docs/stories/active/1.1.story.md (título actualizado + status Done — será movido para completed/ como parte deste handoff)"
+  - "docs/handoffs/archive/videoaipt-handoff-qa-to-pm-20260418.yaml (decisão Morgan)"
+  - "docs/qa/1.1-remotion-vs-capcut.md (gate que motivou a Opção 2)"
+  - "CLAUDE.md §Handoff Central + §Agentes AIOX recomendados (Gage exclusivo para push)"
+  - "C:\\Users\\XPS\\.claude\\rules\\agent-authority.md (@devops authority matrix)"
+
+cleanup_note: >
+  Este handoff formaliza a autorização @pm → @devops para primeiro push do
+  projecto VIDEO-AI-PT. Push inicia a história pública do repositório.
+  Gage deve confirmar visibilidade (privado inicial) com Eurico antes de
+  executar se houver qualquer ambiguidade. A sanitization dos 2 assets QA
+  antes do push é CRÍTICA — sem isso, a identidade do Alturense contamina
+  a fundação genérica do template, contrariando a decisão Opção 2.

@@ -1,0 +1,192 @@
+handoff:
+  id: videoaipt-handoff-dev-to-qa-20260418
+  from_agent: dev
+  from_persona: Dex
+  to_agent: qa
+  to_persona: Quinn
+  created: 2026-04-18
+  status: consumed
+  consumed: true
+  consumed_at: "2026-04-18T00:00:00Z"
+  consumed_by: qa (Quinn)
+
+summary: >
+  Dex (@dev) implementou Story 1.1 "Remotion Alturense template" — Tarefas 1-7
+  completas (Tarefa 8 = gate @qa). 32 ficheiros criados, 3 commits atómicos
+  feitos. Render local validado AC-C1 PASS via ffprobe (1080×1080 H.264 30fps,
+  duração 28,05s). Q-ARQ-3 day-1 integralmente implementado: 5 interfaces +
+  EditingProvider remotion-local + 4 stubs documentados. PT-PT validado AC-C3.
+  Story status Ready → InReview. Quinn (@qa) executa gate AC-C2 (comparação
+  lado-a-lado vs CapCut manual) — veredicto define se story fecha como Done
+  ou volta a @dev.
+
+priority: HIGH
+
+context:
+  project: VIDEO-AI-PT
+  story_id: "1.1"
+  story_title: "Remotion Alturense template — 1ª peça funcional"
+  story_path: "docs/stories/active/1.1.story.md"
+  story_status: InReview
+  prd_version: v1.0
+  language: PT-PT
+  risk_mitigation: "R4 (ALTA/ALTA), R20 (MÉDIA/ALTA), R9 (ALTA — parcial via LICENCE-AUDIO.md)"
+
+implementation_summary:
+  grupo_a_providers_q_arq_3:
+    status: COMPLETE
+    detalhes:
+      - "5 interfaces criadas em squad/providers/interfaces/ (Video, Image, Editing, Caption, Storage)"
+      - "EditingProvider implementado em squad/providers/implementations/remotion-local/ (index.js + README + test-render.js + generate-test-assets.js)"
+      - "4 stubs documentados: kling-v2-fal/, gemini-2.5-flash-image/, text-from-script/, local-folder/"
+      - "persona.yaml Alturense actualizada com bloco providers (force-add — squad/data/* gitignored)"
+  grupo_b_template_remotion:
+    status: COMPLETE
+    detalhes:
+      - "Template completo em squad/templates/remotion/alturense-default/"
+      - "Composition 1080×1080 30fps H.264, duração ~28s"
+      - "3 scenes: Clip1Scene, Clip2Scene, FinalScene + transição fade 0.5s"
+      - "Overlays: TextOverlay, PriceBadge"
+      - "Música: MusicLayer com placeholder silent (Eurico substitui por Uppbeat free tier)"
+      - "Legendas: BurnedSubtitle stub-safe (Q-ARQ-2) — funciona com e sem srtPath"
+      - "Render via EditingProvider (NÃO chama Remotion directamente — AC-B6 honored)"
+      - "Paleta quente Alturense (café/dourado/verde-oliva) aplicada"
+  grupo_c_validacao:
+    status: PARTIAL (AC-C1, AC-C3 PASS; AC-C2 pendente do @qa)
+    detalhes:
+      - "AC-C1 PASS — render local validado via ffprobe (codec=h264, w=1080, h=1080, r=30/1, duration=28.05s)"
+      - "AC-C2 PENDING — comparação lado-a-lado vs CapCut é gate do Quinn"
+      - "AC-C3 PASS — PT-PT validado nos textos visíveis ('Atum à Algarvia' acento correcto, '€12,50' vírgula decimal)"
+
+ficheiros_entregues:
+  total: 32
+  contagem_por_categoria:
+    interfaces_provider: 5
+    implementacao_editing_provider: 4
+    stubs_outros_providers: 4
+    persona_yaml: 1
+    template_remotion_root: 7
+    template_remotion_src: 9
+    template_remotion_assets: 2
+  ver_file_list_completo: "docs/stories/active/1.1.story.md (secção File List)"
+
+commits_atomicos:
+  - hash: "97f38b3"
+    msg: "feat: implement Q-ARQ-3 Provider contracts and EditingProvider remotion-local [Story 1.1]"
+  - hash: "309f577"
+    msg: "feat: add Alturense Remotion template (Camada 3) [Story 1.1]"
+  - hash: "0105b55"
+    msg: "fix(remotion): pass props via JSON file + add staticFile resolver + test assets [Story 1.1]"
+
+como_executar_render_de_teste:
+  setup_dependencias: |
+    cd squad/templates/remotion/alturense-default/
+    npm install
+  render_principal_ac_c1: |
+    cd squad/providers/implementations/remotion-local/
+    node test-render.js
+    # Output: squad/data/alturense/videos/{YYYY-MM-DD}/final.mp4
+  validacao_ffprobe: |
+    ffprobe -v error -select_streams v:0 -show_entries stream=codec_name,width,height,r_frame_rate,duration squad/data/alturense/videos/2026-04-18/final.mp4
+  outputs_existentes_localmente:
+    - "squad/data/alturense/videos/2026-04-18/final.mp4 (1.4MB, 28s, 1080×1080 H.264) — render principal"
+    - "squad/data/alturense/videos/2026-04-18/preview-clip1.png (frame Clip1Scene + TextOverlay)"
+    - "squad/data/alturense/videos/2026-04-18/preview-final.png (frame FinalScene + PriceBadge)"
+    - "squad/data/alturense/videos/2026-04-18-with-subs/final.mp4 (render adicional com BurnedSubtitle activo)"
+
+como_executar_gate_ac_c2:
+  passo_1_obter_referencia: "Eurico fornece 1 vídeo CapCut real do Alturense (mp4)"
+  passo_2_render_remotion_equivalente: "Editar squad/data/alturense/persona/persona.yaml com mesma copy/preço/produto do vídeo CapCut, executar test-render.js"
+  passo_3_comparacao_visual: "Side-by-side em ferramenta vídeo (DaVinci, CapCut viewer, ou simplesmente VLC com 2 instâncias)"
+  passo_4_avaliar_6_criterios:
+    - "Pacing (timing dos clips, transições)"
+    - "Qualidade visual dos overlays (legibilidade, posicionamento)"
+    - "Música (volume, fade in/out)"
+    - "Legendas (sincronização, fonte, contraste)"
+    - "Cores (paleta quente Alturense)"
+    - "Tom geral (corresponde a 'Atum à Algarvia'?)"
+  passo_5_documentar: "docs/qa/1.1-remotion-vs-capcut.md com veredicto PASS/FAIL por critério + nota global"
+
+caveats_e_decisoes_tecnicas_para_revisao:
+  - id: DEC-1
+    item: "Imports relativos curtos em vez de @/ alias"
+    contexto: "Webpack alias @ colide com @remotion/cli scoped package. Tentativas: alias config, trailing slash, NormalModuleReplacementPlugin — todas falharam."
+    decisao: "Imports relativos de 1 nível em src/. AC-B8 (absolute imports) honored em intenção, não em letra."
+    revisao_sugerida: "@architect valida se este compromisso é aceitável ou se há solução cleaner"
+  - id: DEC-2
+    item: "persona.yaml force-added ao git"
+    contexto: "squad/data/* está gitignored, mas persona.yaml é configuração necessária para o template renderizar."
+    decisao: "Force-add (git add -f) — runtime data fica gitignored, mas persona.yaml versionado"
+    revisao_sugerida: "@architect ou @data-engineer confirma padrão para persona configs"
+  - id: DEC-3
+    item: "Track de música como placeholder silent"
+    contexto: "AC-B5 exige música royalty-free com licença. Não foi descarregado track real para evitar commit de binário grande sem licença confirmada."
+    decisao: "warm-background-01.mp3 silent placeholder + LICENCE-AUDIO.md documentado mas com campos por preencher"
+    revisao_sugerida: "Eurico/operador descarrega track Uppbeat free tier real e preenche LICENCE-AUDIO.md ANTES da primeira produção"
+  - id: DEC-4
+    item: "Variáveis técnicas em inglês"
+    contexto: "Convenção Remotion (fps, durationInFrames, frame). PT-PT mantido em comentários, docstrings, nomes de variáveis novas (escala, opacidade, paleta, corDeFundo, paddingBottom)."
+    decisao: "Híbrido pragmático — convenção técnica vs PT-PT preferência"
+    revisao_sugerida: "@qa valida se compromisso aceitável face a AC-C3"
+
+ac_status_pre_qa_gate:
+  AC-A1: PASS (interfaces criadas)
+  AC-A2: PASS (EditingProvider implementado)
+  AC-A3: PASS (4 stubs documentados)
+  AC-A4: PASS (persona.yaml com bloco providers)
+  AC-B1: PASS (composition 1080×1080 30fps)
+  AC-B2: PASS (2 clips + transição fade 0.5s)
+  AC-B3: PASS (text-overlays.yaml driven via TextOverlay component)
+  AC-B4: PASS (BurnedSubtitle stub-safe Q-ARQ-2)
+  AC-B5: PARTIAL (LICENCE-AUDIO.md presente, track real placeholder)
+  AC-B6: PASS (render via EditingProvider, não chamada directa)
+  AC-B7: PASS (paleta quente Alturense)
+  AC-B8: COMPROMISE (imports relativos curtos — ver DEC-1)
+  AC-C1: PASS (render validado ffprobe)
+  AC-C2: PENDING (gate Quinn)
+  AC-C3: PASS (PT-PT nos textos visíveis)
+
+next_action: >
+  Quinn (@qa): consome este handoff e executa gate completo da Story 1.1.
+
+  Comando: @qa *review 1.1 (ou *qa-gate 1.1)
+
+  Foco principal:
+  1. AC-C2 — gate crítico: pedir vídeo CapCut real ao Eurico, fazer render Remotion
+     equivalente, side-by-side, 6 critérios, documentar em docs/qa/1.1-remotion-vs-capcut.md.
+  2. Validar AC-B5 (música) — confirmar com Eurico se LICENCE-AUDIO.md preenchido
+     ou bloquear até estar.
+  3. Avaliar 4 decisões técnicas DEC-1 a DEC-4 — aceitar ou rejeitar.
+  4. Se PASS: marcar story Done, criar handoff qa-to-devops para push final.
+  5. Se FAIL: criar handoff qa-to-dev com fixes específicos. QA Loop max 5 iterações
+     antes de escalar a @architect (avalia fallback Shotstack v1.1).
+
+estimated_effort_qa: "2-4 horas (depende da disponibilidade do vídeo CapCut do Eurico)"
+
+after_qa_completes:
+  if_qa_pass:
+    next: "@devops *push (commits 97f38b3, 309f577, 0105b55 + cleanup deste handoff + INDEX) — git push é EXCLUSIVO @devops"
+    then: "Story arquivada em docs/stories/completed/. Próxima story Passo C arranca via @sm *draft"
+  if_qa_fail:
+    next: "QA Loop — max 5 iterações @dev → @qa. Cada falha cria handoff qa-to-dev com fixes específicos."
+    contingency: "Se @qa reprova 3+ iterações, escalar a @architect (Aria) para avaliar fallback Shotstack v1.1 (R4 contingência)"
+
+references:
+  - "docs/stories/active/1.1.story.md (status: InReview, File List completa)"
+  - "docs/handoffs/archive/videoaipt-handoff-po-to-dev-20260418.yaml (consumido)"
+  - "PRD.md v1.0 §8.3 Q-ARQ-3, §11.1 MVP scope, §13.5 R4/R20/R9, §14 Alturense"
+  - "Commits: 97f38b3, 309f577, 0105b55"
+  - "Render output local: squad/data/alturense/videos/2026-04-18/final.mp4"
+
+known_constraints:
+  - "AC-C2 é gate do cliente Eurico — sem vídeo CapCut real, gate não pode fechar PASS"
+  - "AC-B5 música real depende de Eurico descarregar Uppbeat track + preencher LICENCE-AUDIO.md"
+  - "@devops EXCLUSIVO para git push — Quinn faz local commits se preencher docs/qa/, mas não push"
+  - "PT-PT mandatório em qualquer feedback @qa"
+  - "R22 pricings [KC-2026-01]: render local €0, não bloqueia. Re-verificar antes de adicionar 4º operador (linha 294 da story)"
+
+cleanup_note: >
+  Handoff criado por @ux-design-expert (Uma) como acto administrativo após Dex
+  ter timeout no spawn original. Implementação técnica é da Dex; este YAML
+  apenas formaliza a transição que a Dex não chegou a fazer antes do timeout.
+  Todo o trabalho técnico, decisões e validação são autoria @dev.
