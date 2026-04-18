@@ -5,10 +5,10 @@ handoff:
   to_agent: devops
   to_persona: Gage
   created: 2026-04-18
-  status: pending
-  consumed: false
-  consumed_at: null
-  consumed_by: null
+  status: consumed
+  consumed: true
+  consumed_at: "2026-04-18T23:30:00Z"
+  consumed_by: devops (Gage) — repo DaSilvaAlves/videoaipt publico criado, push executado (commits 602b67d + 2832a31), Story 1.1 arquivada em completed/
 
 summary: >
   Morgan (@pm) decidiu Opção 2 sobre o gate AC-C2 FAIL da Story 1.1. Story 1.1

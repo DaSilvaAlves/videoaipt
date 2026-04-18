@@ -1,0 +1,177 @@
+handoff:
+  id: videoaipt-handoff-devops-to-eurico-20260418
+  from_agent: devops
+  from_persona: Gage
+  to_agent: eurico
+  to_persona: human (Eurico Operator)
+  created: 2026-04-18
+  status: pending
+  consumed: false
+  consumed_at: null
+  consumed_by: null
+
+summary: >
+  Gage (@devops) executou o primeiro push do projecto VIDEO-AI-PT. Repo
+  publico criado em DaSilvaAlves/videoaipt (GitHub), todos os commits
+  locais pushed (8 commits historicos + 2 commits novos da sessao =
+  10 commits no total), Story 1.1 arquivada em docs/stories/completed/
+  como "Fundacao Q-ARQ-3 + template base generico". Historial publico do
+  projecto INICIADO. Bloqueios desta fase removidos — Pax (@po) pode
+  avancar com Story 1.2 sem dependencia do @devops.
+
+priority: NORMAL
+
+context:
+  project: VIDEO-AI-PT
+  project_status: "Fundacao Q-ARQ-3 publicada + primeira peca publicavel pendente na Story 1.2"
+  language: PT-PT
+  branch: master
+
+repository_criado:
+  url: "https://github.com/DaSilvaAlves/videoaipt"
+  visibilidade: public
+  owner: DaSilvaAlves (conta pessoal — transferencia futura para org comunidade-ia-avancada-pt quando for criada)
+  branch_default: master
+  clone_url: "https://github.com/DaSilvaAlves/videoaipt.git"
+  decisao_eurico:
+    nome: "Opcao B escolhida — criar em conta pessoal DaSilvaAlves, transferir para org comunidade-ia-avancada-pt depois quando existir"
+    visibilidade: "public (escolha Eurico, registado como decisao consciente)"
+    licenca_conselho: "Recomendado adicionar LICENSE.md em commit futuro — MIT ou Apache-2.0 sao opcoes comuns para projectos abertos em Portugal"
+
+push_executado:
+  push_1_fundacao:
+    commit_hash: "602b67d"
+    mensagem: "chore(story): redefine Story 1.1 as foundation + sanitize QA artefacts + stage gate evidence [Story 1.1]"
+    conteudo:
+      - "Story 1.1 redefinida como 'Fundacao Q-ARQ-3 + template base generico'"
+      - "Sistema visual Alturense deferido para Story 1.2 (evidencia em docs/qa/1.1-remotion-vs-capcut.md)"
+      - "Sanitization: frango-final-19-04.png movido de public/ para docs/qa/samples/, altura11-proxy.mp3 eliminado"
+      - "21 ficheiros staged (gate + handoffs + stories + .gitignore refinement)"
+    trailers_incluidos: "Constraint, Rejected, Directive, Confidence, Scope-risk, Not-tested, Co-Authored-By"
+  push_2_arquivamento:
+    commit_hash: "2832a31"
+    mensagem: "chore(stories): archive Story 1.1 as Done (foundation) [Story 1.1]"
+    conteudo:
+      - "Story 1.1 movida de docs/stories/active/ para docs/stories/completed/"
+  commits_originais_dev_agora_publicos:
+    - hash: "97f38b3"
+      msg: "feat: implement Q-ARQ-3 Provider contracts and EditingProvider remotion-local [Story 1.1]"
+    - hash: "309f577"
+      msg: "feat: add Alturense Remotion template (Camada 3) [Story 1.1]"
+    - hash: "0105b55"
+      msg: "fix(remotion): pass props via JSON file + add staticFile resolver + test assets [Story 1.1]"
+  commits_pre_existentes_anteriores_dev_tambem_publicos:
+    - "9444238 docs(prd): Passo C.2 concluido — PRD v1.0 APPROVED via @pm"
+    - "6a92811 docs(arch): Passo C.1 concluido — stack ratificada via @architect"
+    - "3c44a22 docs(research): Passo B concluido — decisao de stack via @analyst"
+    - "5a27dfe docs(handoffs): rotate pm-to-eurico to archive, open eurico-to-analyst"
+    - "938ecd8 docs(prd): expand PRD v0.1 skeleton to v0.9 draft via @pm"
+
+sanitization_executada:
+  frango_final_19_04_png:
+    origem: "squad/templates/remotion/alturense-default/public/placeholder/frango-final-19-04.png"
+    destino: "docs/qa/samples/frango-final-19-04.png"
+    razao: "Preservar foto real do prato como evidencia QA (input para Story 1.2) sem contaminar o template generico. Acessivel publicamente no repo — foto de prato de restaurante nao tem issues de privacidade/licenca."
+  altura11_proxy_mp3:
+    accao: "eliminado localmente (nao estava versionado porque template .gitignore ja cobria *.mp3)"
+    razao: "Extracto do CapCut Free Library — licenca nao permite redistribuicao. Nao deveria ocupar espaco local."
+  altura11_mp4_e_altura11_MP3:
+    accao: "adicionados ao .gitignore da raiz — preservados localmente mas NAO versionados"
+    razao: "Repo publico + musica CapCut Free = risco de licenca. Preservados em docs/qa/altura11/ para evidencia QA de Story 1.2 (side-by-side renders futuros). Se Eurico confirmar licenca Uppbeat equivalente e quiser re-publicar, remover linhas do .gitignore trivialmente."
+
+pre_push_gates_status:
+  coderabbit_cli: "NAO EXECUTADO. Razao: primeiro push, sem base main/remote para comparar. Aplicar a partir do proximo push (base main = primeiro commit push). Documentar em follow-up."
+  lint_typecheck_build: "N/A. Projecto greenfield sem npm test/lint/typecheck/build configurados. E follow-up do Passo A (infraestrutura) — abrir story dedicada se Pax/Morgan quiserem priorizar."
+  secrets_scan: "Visual scan OK — nenhum .env, api-key, token ou credencial nos ficheiros staged."
+  gitignore_ok: "squad/data/* continua ignorado; altura11.mp4/MP3 ignorados; .claude/agent-memory/ ignorado."
+
+estado_do_projecto_pos_push:
+  stories:
+    active: "Nenhuma (Story 1.2 sera criada pela @po Pax em paralelo a partir do handoff pm-to-po-story-1.2)"
+    completed:
+      - id: "1.1"
+        titulo: "Fundacao Q-ARQ-3 + template Remotion base generico"
+        data: "2026-04-18"
+  handoffs_pending_no_sistema_apos_esta_sessao:
+    - "videoaipt-handoff-pm-to-po-20260418-story-1.2 (Pax inicia Story 1.2)"
+  handoffs_archived_nesta_sessao:
+    - "videoaipt-handoff-qa-to-pm-20260418 (consumido por Morgan)"
+    - "videoaipt-handoff-pm-to-devops-20260418 (consumido por este handoff)"
+
+validacao_github:
+  repo_url: "https://github.com/DaSilvaAlves/videoaipt"
+  commits_visiveis: 10 (8 historicos + 2 novos da sessao devops)
+  branch: master (default)
+  colaboradores: apenas DaSilvaAlves (owner)
+  issues: 0 abertas
+  pull_requests: 0 abertos
+  releases: nenhum (considerar primeiro release v0.1.0 quando Story 1.2 fechar com PASS)
+
+follow_ups_recomendados_post_push:
+  1_licenca:
+    accao: "Adicionar LICENSE.md ao repo (escolher MIT, Apache-2.0, ou outro)"
+    quem: "Eurico decide; @devops aplica"
+    urgencia: "baixa, mas recomendado antes de outros contribuidores"
+  2_readme:
+    accao: "Escrever README.md minimo na raiz (1 paragrafo do que e + status + link para HANDOFF-BOOTSTRAP.md)"
+    quem: "@pm Morgan ou @dev"
+    urgencia: "baixa"
+  3_ci_cd:
+    accao: "Setup GitHub Actions para lint/typecheck/test (quando existirem) + CodeRabbit PR integration"
+    quem: "@devops"
+    urgencia: "media — depois de npm scripts serem configurados (Passo A)"
+  4_branch_protection:
+    accao: "Proteger master: require PR review + require status checks"
+    quem: "@devops"
+    urgencia: "media — depois de CI ficar verde"
+  5_transferencia_para_org:
+    accao: "Quando organizacao comunidade-ia-avancada-pt for criada no GitHub, transferir repo de DaSilvaAlves/videoaipt para org/videoaipt (git remotes dos developers locais actualizam automaticamente)"
+    quem: "Eurico cria org + @devops executa transferencia"
+    urgencia: "baixa (pode ficar em conta pessoal enquanto projecto esta em MVP Fase 1)"
+  6_proximo_passo_pipeline:
+    accao: "@po Pax arranca Story 1.2 — ja tem handoff pm-to-po-story-1.2 pending com AC detalhados"
+    quem: "Pax"
+    urgencia: "alta — R4 mitigation depende desta story"
+
+riscos_e_observacoes:
+  repo_publico:
+    observacao: "Repo e publico desde o primeiro push. Qualquer commit fica visivel na internet permanentemente (mesmo se apagado, fica no historial de forks/caches)."
+    mitigation_ja_aplicada: "altura11.mp4 e altura11.MP3 (binarios CapCut Free com musica sob licenca restritiva) ignorados via .gitignore"
+    acao_futura: "Antes de adicionar novos assets, verificar licenca e se e apropriado para historial publico"
+  sem_ci_cd_ainda:
+    observacao: "Nao ha lint/test/build configurados. Qualquer push corre sem gates."
+    mitigation: "CodeRabbit pre-PR sera a unica quality gate a partir da proxima PR (quando houver base main)."
+
+next_action: >
+  Eurico (human):
+  1. Visita https://github.com/DaSilvaAlves/videoaipt para confirmar que o repo
+     esta la e os commits estao visiveis.
+  2. Decide se queres:
+     - (a) Adicionar LICENSE.md agora
+     - (b) Criar a org comunidade-ia-avancada-pt no GitHub quando for hora
+     - (c) Seguir para Story 1.2 e tratar licence/org depois
+  3. Follow-up operacional independente (comunicado antes):
+     - Descarregar track Uppbeat free tier equivalente a "Latin Guitar" CapCut
+     - Preencher squad/templates/remotion/alturense-default/assets/LICENCE-AUDIO.md
+     - Isto destravara DEC-3 na Story 1.2
+
+  Paralelamente: Pax (@po) pode arrancar Story 1.2 agora — ver handoff
+  videoaipt-handoff-pm-to-po-20260418-story-1.2.yaml.
+
+estimated_effort_eurico: "5 min (verificar repo no GitHub + decidir LICENSE) — o grosso do trabalho operacional e paralelo."
+
+references:
+  - "Repo GitHub: https://github.com/DaSilvaAlves/videoaipt"
+  - "Commits esta sessao: 602b67d (sanitize + redefinition) + 2832a31 (archive)"
+  - "Commits Story 1.1: 97f38b3, 309f577, 0105b55"
+  - "docs/handoffs/archive/videoaipt-handoff-pm-to-devops-20260418.yaml (consumido)"
+  - "docs/handoffs/videoaipt-handoff-pm-to-po-20260418-story-1.2.yaml (pending — Pax)"
+  - "docs/stories/completed/1.1.story.md (arquivada)"
+  - "docs/qa/1.1-remotion-vs-capcut.md (gate do Quinn — input para Story 1.2)"
+
+cleanup_note: >
+  Primeiro push do projecto VIDEO-AI-PT executado com sucesso. Historial
+  publico do projecto iniciado em DaSilvaAlves/videoaipt. Gage respeitou
+  integralmente os limites: apenas operacoes git e infra, sem modificar
+  codigo produtivo, com sanitization minuciosa antes do push, e documentacao
+  completa de cada decisao no commit trailers + neste handoff.

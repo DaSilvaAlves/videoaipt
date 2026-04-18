@@ -10,8 +10,8 @@
 
 | ID | From → To | Summary | Created |
 |----|-----------|---------|---------|
-| videoaipt-handoff-pm-to-devops-20260418 | pm (Morgan) → devops (Gage) | Morgan decidiu Opção 2. Gage autorizado a fazer PRIMEIRO PUSH do projecto: 3 commits atómicos (97f38b3, 309f577, 0105b55) + mudar Story 1.1 para `docs/stories/completed/`. ATENÇÃO pré-push: (1) configurar remote git se ainda não existe (greenfield), (2) sanitizar 2 assets QA staged em public/ (mover frango-final-19-04.png para docs/qa/samples/, eliminar altura11-proxy.mp3 — licença CapCut Free não válida para produção). Confirmar visibilidade do repo (privado inicial) com Eurico. | 2026-04-18 |
 | videoaipt-handoff-pm-to-po-20260418-story-1.2 | pm (Morgan) → po (Pax) | Morgan instrui Pax a iniciar ciclo de criação da Story 1.2 "Sistema visual Alturense": 4 componentes React permanentes (AlturenseFrame azulejos+oliveira, AlturenseHeader serif 2-linhas, AlturenseCard sticker central, AlturenseFooter laranja Take-Away) + price opcional + brandOverlaySystem prop + DEC-1 alias follow-up + DEC-2 .gitignore follow-up. Esta story é R4 mitigation real — @qa só fecha PASS se qualidade >= CapCut. Pax decide se chama @ux-design-expert Uma para mini-spec de design antes do @sm draftar. | 2026-04-18 |
+| videoaipt-handoff-devops-to-eurico-20260418 | devops (Gage) → eurico (human) | Primeiro push do projecto executado. Repo público criado em **https://github.com/DaSilvaAlves/videoaipt** (Opção B — conta pessoal Eurico, transferência futura para org comunidade-ia-avancada-pt). 10 commits públicos (8 históricos + 602b67d sanitize/redefinition + 2832a31 arquivamento). Story 1.1 em `docs/stories/completed/`. Follow-ups recomendados: LICENSE.md, README.md, CI/CD, branch protection, transferência para org. altura11.mp4/MP3 gitignored (licença CapCut Free). | 2026-04-18 |
 
 ---
 
@@ -30,6 +30,7 @@
 | videoaipt-handoff-dev-to-qa-20260418 | dev (Dex) → qa (Quinn) | 2026-04-18 | qa (Quinn) — gate BLOCKED em AC-C2, DEC review completa |
 | videoaipt-handoff-qa-to-eurico-20260418 | qa (Quinn) → eurico (human) | 2026-04-18 | eurico (human) — entregou altura11.mp4 + frango-assado-19-04.png + price €7,50 |
 | videoaipt-handoff-qa-to-pm-20260418 | qa (Quinn) → pm (Morgan) | 2026-04-18 | pm (Morgan) — decidiu Opção 2 (fechar 1.1 como fundação + abrir Story 1.2) |
+| videoaipt-handoff-pm-to-devops-20260418 | pm (Morgan) → devops (Gage) | 2026-04-18 | devops (Gage) — primeiro push executado, repo DaSilvaAlves/videoaipt público criado, Story 1.1 arquivada |
 
 ---
 
